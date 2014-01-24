@@ -1,11 +1,10 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.forms import ModelForm
-from django.forms.models import inlineformset_factory
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 
-from models import Participant, PanelProposal, ParticipantPanelProposalResponse
+from models import Participant, PanelProposal, PanelProposalResponse
 
 
 class ParticipantForm(ModelForm):
@@ -13,12 +12,10 @@ class ParticipantForm(ModelForm):
         model = Participant
         exclude = ['panels', 'responses']
 
-class ParticipantPanelProposalResponseForm(ModelForm):
+class PanelProposalResponseForm(ModelForm):
     class Meta:
-        model = ParticipantPanelProposalResponse
+        model = PanelProposalResponse
         exclude = ['participant', 'panel_proposal']
-
-ParticipantPanelProposalResponseFormset = inlineformset_factory(Participant, ParticipantPanelProposalResponse, form=ParticipantPanelProposalResponseForm, extra=3, can_delete=False)
 
 
 def create_participant(request):
@@ -33,19 +30,37 @@ def create_participant(request):
     context = { 'form': form, }
     return render(request, 'precon/survey_start.html', context)
 
+### NOT A VIEW
+def build_forms(participant, post_data=None):
+    pfx = lambda pp: "ppr%d" % (pp.id,)
+
+    panel_proposals = PanelProposal.objects.all()
+    panel_proposal_response_forms = []
+    for pp in panel_proposals:
+        try:
+            ppr = PanelProposalResponse.objects.get(participant=participant, panel_proposal=pp)
+            panel_proposal_response_forms.append( ( pp, PanelProposalResponseForm(data=post_data, instance=ppr, prefix=pfx(pp)) ) )
+        except PanelProposalResponse.DoesNotExist:
+            panel_proposal_response_forms.append( ( pp, PanelProposalResponseForm(data=post_data, instance=PanelProposalResponse(), prefix=pfx(pp)) ) )
+    return panel_proposal_response_forms
 
 def record_responses(request, nonce):
     participant = get_object_or_404(Participant, nonce=nonce)
 
     if request.method == 'POST':
-        formset = ParticipantPanelProposalResponseFormset(request.POST, instance=participant)
-        if formset.is_valid():
-            formset.save()
+        pps_forms = build_forms(participant, request.POST)
+        if all([f.is_valid() for pp, f in pps_forms]):
+            for pp, f in pps_forms:
+                ppr = f.save(commit=False)
+                ppr.participant = participant
+                ppr.panel_proposal = pp
+                ppr.save()
+
             return HttpResponseRedirect(reverse('survey_done', kwargs={'nonce': participant.nonce}))
     else:
-        formset = ParticipantPanelProposalResponseFormset(instance=participant)
+        pps_forms = build_forms(participant)
 
-    context = { 'participant': participant, 'formset': formset, }
+    context = { 'participant': participant, 'pps_forms': pps_forms, }
     return render(request, 'precon/survey.html', context)
 
 

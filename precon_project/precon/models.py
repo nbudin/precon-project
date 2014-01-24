@@ -12,8 +12,11 @@ class Participant(models.Model):
 
     name = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=50, unique=True)
-    responses = models.ManyToManyField('PanelProposal', through='ParticipantPanelProposalResponse', blank=True)
+    panel_proposals_responded = models.ManyToManyField('PanelProposal', through='PanelProposalResponse', related_name='participants_responded', blank=True)
     panels = models.ManyToManyField('Panel', related_name='panelists', blank=True)
+
+    def responses(self):
+        return PanelProposalResponses.objects.filter(participant=self)
 
     def __unicode__(self):
         return self.name
@@ -23,11 +26,14 @@ class PanelProposal(models.Model):
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
 
+    def responses(self):
+        return PanelProposalResponses.objects.filter(panel_proposal=self)
+
     def __unicode__(self):
         return "Proposal: \"%s\"" % (self.name,)
 
 
-class ParticipantPanelProposalResponse(models.Model):
+class PanelProposalResponse(models.Model):
     NOT_INTERESTED = 'not interested'
     ACTIVELY_DISINTERESTED = 'actively disinterested'
     POTENTIALLY_INTERESTED = 'potentially interested'
@@ -49,7 +55,7 @@ class ParticipantPanelProposalResponse(models.Model):
     comments = models.TextField(max_length=1000, blank=True)
 
     def __unicode__(self):
-        return "%s: %s" % (self.panel_proposal, self.participant)
+        return "Response: \"%s\": %s" % (self.panel_proposal.name, self.participant)
 
 
 class Panel(models.Model):

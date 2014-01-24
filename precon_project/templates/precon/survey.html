@@ -8,7 +8,10 @@
 
     <form class="record-responses" enctype="multipart/form-data" action="{% url 'record_responses' nonce=participant.nonce %}" method="post">
         {% csrf_token %}
-        {{ formset }}
+        {% for pp, form in pps_forms %}
+            {{ pp }}
+            {{ form.as_p }}
+        {% endfor %}
         <p class="submit-next">
             <input class="submitbutton" type="submit" value="Done!" />
         </p>
