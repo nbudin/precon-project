@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.forms import ModelForm
-from django.forms.formsets import formset_factory, inlineformset_factory
+from django.forms.models import inlineformset_factory
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 
@@ -16,9 +16,9 @@ class ParticipantForm(ModelForm):
 class ParticipantPanelProposalResponseForm(ModelForm):
     class Meta:
         model = ParticipantPanelProposalResponse
-        exclude = ['participant']
+        exclude = ['participant', 'panel_proposal']
 
-ParticipantPanelProposalResponseFormset = inlineformset_factory(Participant, ParticipantPanelProposalResponse, extra=0)
+ParticipantPanelProposalResponseFormset = inlineformset_factory(Participant, ParticipantPanelProposalResponse, form=ParticipantPanelProposalResponseForm, extra=3, can_delete=False)
 
 
 def create_participant(request):
