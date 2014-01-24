@@ -17,4 +17,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^survey/$', 'precon.views.create_participant', name='create_participant'),
+    url(r'^survey/(?P<nonce>[\da-z]+)/$', 'precon.views.record_responses', name='record_responses'),
+    url(r'^survey/(?P<nonce>[\da-z]+)/done/$', 'precon.views.survey_done', name='survey_done'),
 )

@@ -1,10 +1,19 @@
+import string, random
+
 from django.db import models
+ 
+def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
+    return ''.join(random.choice(chars) for x in range(size))
 
 class Participant(models.Model):
+    creation_time = models.DateTimeField(auto_now_add=True, editable=False)
+    modification_time = models.DateTimeField(auto_now=True, editable=False)
+    nonce = models.CharField(default=lambda: id_generator(size=6), unique=True, editable=False, max_length=6)
+
     name = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=50, unique=True)
-    responses = models.ManyToManyField('PanelProposal', through='ParticipantPanelProposalResponse')
-    panels = models.ManyToManyField('Panel', related_name='panelists')
+    responses = models.ManyToManyField('PanelProposal', through='ParticipantPanelProposalResponse', blank=True)
+    panels = models.ManyToManyField('Panel', related_name='panelists', blank=True)
 
     def __unicode__(self):
         return self.name
@@ -30,11 +39,14 @@ class ParticipantPanelProposalResponse(models.Model):
         (I_HAVE_TO_BE_THERE, I_HAVE_TO_BE_THERE),
     )
 
+    creation_time = models.DateTimeField(auto_now_add=True, editable=False)
+    modification_time = models.DateTimeField(auto_now=True, editable=False)
+
     participant = models.ForeignKey(Participant)
     panel_proposal = models.ForeignKey(PanelProposal)
     attending_interest = models.CharField(max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
     presenting_interest = models.CharField(max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
-    comments = models.TextField(max_length=1000)
+    comments = models.TextField(max_length=1000, blank=True)
 
     def __unicode__(self):
         return "%s: %s" % (self.panel_proposal, self.participant)

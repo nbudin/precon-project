@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Precon Survey{% endblock %}
+
+{% block page_title %}Precon Survey{% endblock %}
+
+{% block content %}
+
+    <form class="create-participant" enctype="multipart/form-data" action="{% url 'create_participant' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p class="submit-next">
+            <input class="submitbutton" type="submit" value="Let's get started!" />
+        </p>
+    </form>
+
+{% endblock %}

@@ -1,7 +1,17 @@
 from django.contrib import admin
 
-from precon.models import Participant, PanelProposal, ParticipantPanelProposalResponse
+from precon.models import Participant, PanelProposal, ParticipantPanelProposalResponse, Panel
 
-admin.site.register(Participant)
+class ParticipantPanelProposalResponseInline(admin.StackedInline):
+    model = ParticipantPanelProposalResponse
+    extra = 0
+
+class ParticipantAdmin(admin.ModelAdmin):
+    inlines = [
+        ParticipantPanelProposalResponseInline,
+    ]
+
+admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(PanelProposal)
 admin.site.register(ParticipantPanelProposalResponse)
+admin.site.register(Panel)

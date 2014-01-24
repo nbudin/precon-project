@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Precon Survey: {{ participant.name }}{% endblock %}
+
+{% block page_title %}Precon Survey: {{ participant.name }}{% endblock %}
+
+{% block content %}
+
+    <form class="record-responses" enctype="multipart/form-data" action="{% url 'record_responses' nonce=participant.nonce %}" method="post">
+        {% csrf_token %}
+        {{ formset }}
+        <p class="submit-next">
+            <input class="submitbutton" type="submit" value="Done!" />
+        </p>
+    </form>
+
+{% endblock %}
