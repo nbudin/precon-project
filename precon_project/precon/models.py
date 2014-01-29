@@ -12,10 +12,10 @@ class Participant(models.Model):
 
     name = models.CharField("Your name, as you would like it to appear in any published material", max_length=50, unique=True)
     email = models.EmailField(max_length=50, unique=True)
-    phone = models.CharField("Phone number", max_length=15, null=True, blank=True)
+    phone = models.CharField("Phone number", max_length=15, null=True, blank=True, help_text="Not for use in scheduling, but so we have it on record, so we can get in touch with you at the con if we need to for some reason. (Eg. you aren't at your panel and it's ten minutes past the scheduled start time.)")
     panel_proposals_responded = models.ManyToManyField('PanelProposal', through='PanelProposalResponse', related_name='participants_responded', null=True, blank=True)
-    slots_available = models.ManyToManyField('Slot', related_name='participants_available', null=True, blank=True)
-    slots_maybe = models.ManyToManyField('Slot', related_name='participants_maybe', null=True, blank=True)
+    slots_available = models.ManyToManyField('Slot', verbose_name="At which of these times would you be available **and happy** to sit on panels?", related_name='participants_available', null=True, blank=True)
+    slots_maybe = models.ManyToManyField('Slot', verbose_name="At which of these times would you be available to sit on panels?", related_name='participants_maybe', null=True, blank=True)
     anything_else = models.TextField(max_length=1000, null=True, blank=True)
 
     def responses(self):
@@ -76,8 +76,8 @@ class PanelProposalResponse(models.Model):
     panel_proposal = models.ForeignKey(PanelProposal)
     attending_interest = models.CharField("How interested would you be in attending this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
     presenting_interest = models.CharField("How interested would you be in presenting at this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
-    presenting_comments = models.TextField(max_length=1000, blank=True)
-    attending_comments = models.TextField(max_length=1000, blank=True)
+    presenting_comments = models.TextField("What (if applicable) makes you interested in presenting at this event?", max_length=1000, blank=True)
+    attending_comments = models.TextField("Any comments?", max_length=1000, blank=True)
 
     def __unicode__(self):
         return "Response: \"%s\": %s" % (self.panel_proposal.name, self.participant)

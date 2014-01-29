@@ -33,9 +33,9 @@
         {% for pp, form in pps_forms %}
             <h3>{{pp}}</h3>
             {% if pp.panelists.all %}
-                <p><b>Presenters: {{pp.panelists.all|join:", "}}{% if pp.needs_panelists %} <i>(and you?)</i>{% endif %}</b></p>
+                <p>Presenters: {{pp.panelists.all|join:", "}}{% if pp.needs_panelists %} <i>(and you?)</i>{% endif %}</p>
             {% else %}
-                <p><b>Presenters: <i>(your name here?)</i></b></p>
+                <p>Presenters: <i>(your name here?)</i></p>
             {% endif %}
             <blockquote>{{ pp.blurb }}</blockquote>
             {% if not pp.needs_panelists %}
