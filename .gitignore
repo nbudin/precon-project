@@ -16,3 +16,6 @@ build
 
 # Logs:
 *.log
+
+# static files
+precon_project/assets

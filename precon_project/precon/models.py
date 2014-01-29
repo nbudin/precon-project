@@ -48,7 +48,7 @@ class PanelProposal(models.Model):
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default=PANEL)
     blurb = models.TextField(max_length=4000)
     needs_panelists = models.BooleanField(default=True)
-    panelists = models.ManyToManyField(Panelist, blank=True)
+    panelists = models.ManyToManyField(Panelist, null=True, blank=True)
 
     def responses(self):
         return PanelProposalResponses.objects.filter(panel_proposal=self)
@@ -76,8 +76,8 @@ class PanelProposalResponse(models.Model):
     panel_proposal = models.ForeignKey(PanelProposal)
     attending_interest = models.CharField("How interested would you be in attending this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
     presenting_interest = models.CharField("How interested would you be in presenting at this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
-    presenting_comments = models.TextField("What (if applicable) makes you interested in presenting at this event?", max_length=1000, blank=True)
-    attending_comments = models.TextField("Any comments?", max_length=1000, blank=True)
+    presenting_comments = models.TextField("What (if applicable) makes you interested in presenting at this event?", max_length=1000, null=True, blank=True)
+    attending_comments = models.TextField("Any comments?", max_length=1000, null=True, blank=True)
 
     def __unicode__(self):
         return "Response: \"%s\": %s" % (self.panel_proposal.name, self.participant)
@@ -86,7 +86,7 @@ class PanelProposalResponse(models.Model):
 class Panel(models.Model):
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
-    panelists = models.ManyToManyField(Panelist, blank=True)
+    panelists = models.ManyToManyField(Panelist, null=True, blank=True)
 
     def __unicode__(self):
         return "\"%s\"" % (self.name,)

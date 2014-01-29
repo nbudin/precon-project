@@ -21,7 +21,7 @@ def get_env_setting(setting):
 
 ########## HOST CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['precon.free-dissociation.com']
 ########## END HOST CONFIGURATION
 
 ########## EMAIL CONFIGURATION
@@ -66,7 +66,11 @@ DATABASES = {
 
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
-CACHES = {}
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 ########## END CACHE CONFIGURATION
 
 

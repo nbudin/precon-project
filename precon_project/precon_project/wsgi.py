@@ -29,8 +29,16 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "precon_project.settings.product
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
+from django.core.handlers.wsgi import WSGIHandler
+
+class WSGIEnvironment(WSGIHandler):
+
+    def __call__(self, environ, start_response):
+
+        os.environ['SECRET_KEY'] = environ['SECRET_KEY']
+        return super(WSGIEnvironment, self).__call__(environ, start_response)
+
+application = WSGIEnvironment()
 
 # Apply WSGI middleware here.
 # from helloworld.wsgi import HelloWorldApplication
