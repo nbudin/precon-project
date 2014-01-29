@@ -25,6 +25,7 @@ class Participant(models.Model):
 class PanelProposal(models.Model):
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
+    needs_panelists = models.BooleanField(default=True)
 
     def responses(self):
         return PanelProposalResponses.objects.filter(panel_proposal=self)
