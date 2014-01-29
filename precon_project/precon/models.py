@@ -13,7 +13,6 @@ class Participant(models.Model):
     name = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=50, unique=True)
     panel_proposals_responded = models.ManyToManyField('PanelProposal', through='PanelProposalResponse', related_name='participants_responded', blank=True)
-    panels = models.ManyToManyField('Panel', related_name='panelists', blank=True)
 
     def responses(self):
         return PanelProposalResponses.objects.filter(participant=self)
@@ -21,11 +20,19 @@ class Participant(models.Model):
     def __unicode__(self):
         return self.name
 
+class Panelist(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    participant = models.ForeignKey(Participant, blank=True)
+
+    def __unicode__(self):
+        return participant and participant.name or self.name
+
 
 class PanelProposal(models.Model):
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
     needs_panelists = models.BooleanField(default=True)
+    panelists = models.ManyToManyField(Panelist, blank=True)
 
     def responses(self):
         return PanelProposalResponses.objects.filter(panel_proposal=self)
@@ -62,7 +69,7 @@ class PanelProposalResponse(models.Model):
 class Panel(models.Model):
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
-    # panelists from M2M on Participant
+    panelists = models.ManyToManyField(Panelist, blank=True)
 
     def __unicode__(self):
         return "\"%s\"" % (self.name,)
