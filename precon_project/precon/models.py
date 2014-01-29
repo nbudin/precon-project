@@ -10,7 +10,7 @@ class Participant(models.Model):
     modification_time = models.DateTimeField(auto_now=True, editable=False)
     nonce = models.CharField(default=lambda: id_generator(size=6), unique=True, editable=False, max_length=6)
 
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField("Your name, as you would like it to appear in any published material", max_length=50, unique=True)
     email = models.EmailField(max_length=50, unique=True)
     panel_proposals_responded = models.ManyToManyField('PanelProposal', through='PanelProposalResponse', related_name='participants_responded', blank=True)
 

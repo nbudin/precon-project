@@ -21,10 +21,12 @@
             <h3>{{pp}}</h3>
             {% if pp.panelists.all %}
                 <p><b>Presenters: {{pp.panelists.all|join:", "}}{% if pp.needs_panelists %} <i>(and you?)</i>{% endif %}</b></p>
+            {% else %}
+                <p><b>Presenters: <i>(your name here?)</i></b></p>
             {% endif %}
             <blockquote>{{ pp.blurb }}</blockquote>
             {% if not pp.needs_panelists %}
-                <p><i>(This {{pp.type|lower}} is full.)</i></p>
+                <p><i>(This {{pp.type|lower}} has enough presenters already.)</i></p>
             {% endif %}
             {{ form.as_p }}
         {% endfor %}
