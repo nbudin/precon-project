@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['precon.free-dissociation.com']
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-host
-EMAIL_HOST = environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_HOST = environ.get('EMAIL_HOST', 'localhost')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-host-password
 EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD', '')
@@ -38,13 +38,13 @@ EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_HOST_USER = environ.get('EMAIL_HOST_USER', 'your_email@example.com')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-port
-EMAIL_PORT = environ.get('EMAIL_PORT', 587)
+EMAIL_PORT = environ.get('EMAIL_PORT', 25)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = '[%s] ' % SITE_NAME
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-use-tls
-EMAIL_USE_TLS = True
+EMAIL_USE_TLS = False
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#server-email
 SERVER_EMAIL = EMAIL_HOST_USER
