@@ -25,6 +25,7 @@
 
         <hr />
 
+        <h3>About You</h3>
         {% include "precon/format_form_snippet.html" with form=participant_form %}
 
         <hr />
@@ -41,7 +42,10 @@
                 <p><i>(This {{pp.type|lower}} has enough presenters already.)</i></p>
             {% endif %}
             {% include "precon/format_form_snippet.html" with form=form %}
+            
+            <hr />
         {% endfor %}
+        {{ anything_else_form.as_p }}
         <p class="submit-next">
             <input class="submitbutton" type="submit" value="Done!" />
         </p>

@@ -12,7 +12,11 @@ class Participant(models.Model):
 
     name = models.CharField("Your name, as you would like it to appear in any published material", max_length=50, unique=True)
     email = models.EmailField(max_length=50, unique=True)
-    panel_proposals_responded = models.ManyToManyField('PanelProposal', through='PanelProposalResponse', related_name='participants_responded', blank=True)
+    phone = models.CharField("Phone number", max_length=15, null=True, blank=True)
+    panel_proposals_responded = models.ManyToManyField('PanelProposal', through='PanelProposalResponse', related_name='participants_responded', null=True, blank=True)
+    slots_available = models.ManyToManyField('Slot', related_name='participants_available', null=True, blank=True)
+    slots_maybe = models.ManyToManyField('Slot', related_name='participants_maybe', null=True, blank=True)
+    anything_else = models.TextField(max_length=1000, null=True, blank=True)
 
     def responses(self):
         return PanelProposalResponses.objects.filter(participant=self)
@@ -72,7 +76,8 @@ class PanelProposalResponse(models.Model):
     panel_proposal = models.ForeignKey(PanelProposal)
     attending_interest = models.CharField("How interested would you be in attending this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
     presenting_interest = models.CharField("How interested would you be in presenting at this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
-    comments = models.TextField(max_length=1000, blank=True)
+    presenting_comments = models.TextField(max_length=1000, blank=True)
+    attending_comments = models.TextField(max_length=1000, blank=True)
 
     def __unicode__(self):
         return "Response: \"%s\": %s" % (self.panel_proposal.name, self.participant)
@@ -85,3 +90,19 @@ class Panel(models.Model):
 
     def __unicode__(self):
         return "\"%s\"" % (self.name,)
+
+class Schedule(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+class Slot(models.Model):
+    schedule = models.ForeignKey(Schedule, related_name='slots')
+    name = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.name
+
+class SiteConfig(models.Model):
+    current_schedule = models.ForeignKey(Schedule, default=None, null=True, blank=True, on_delete=models.SET_NULL)
