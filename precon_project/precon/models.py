@@ -22,10 +22,10 @@ class Participant(models.Model):
 
 class Panelist(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    participant = models.ForeignKey(Participant, blank=True)
+    participant = models.ForeignKey(Participant, default=None, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __unicode__(self):
-        return participant and participant.name or self.name
+        return self.participant and self.participant.name or self.name
 
 
 class PanelProposal(models.Model):
