@@ -10,12 +10,12 @@ from models import Participant, PanelProposal, PanelProposalResponse
 class ParticipantForm(ModelForm):
     class Meta:
         model = Participant
-        exclude = ['panels', 'responses']
+        fields = ['name', 'email']
 
 class PanelProposalResponseForm(ModelForm):
     class Meta:
         model = PanelProposalResponse
-        exclude = ['participant', 'panel_proposal']
+        fields = ['attending_interest', 'presenting_interest', 'comments']
 
 
 def create_participant(request):
