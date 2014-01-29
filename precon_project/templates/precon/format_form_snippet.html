@@ -2,6 +2,7 @@
     <p>
         <label for="{{field.auto_id}}" {% if field.field.required %}class="required"{% endif %}>
             {{field.label}}
+            {% if field.help_text %}<span class="help_text">({{field.help_text}})</span>{% endif %}
         </label>
         {{field}}
     </p>
