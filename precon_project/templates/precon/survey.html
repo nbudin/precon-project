@@ -10,6 +10,9 @@
     height: 4em;
     width: 40em;
    }
+   label.required {
+    font-weight: bold;
+   }
    </style>
 {% endblock %}
 
@@ -17,6 +20,15 @@
 
     <form class="record-responses" enctype="multipart/form-data" action="{% url 'record_responses' nonce=participant.nonce %}" method="post">
         {% csrf_token %}
+
+        <p>Fields in <b>bold</b> are required.</p>
+
+        <hr />
+
+        {% include "precon/format_form_snippet.html" with form=participant_form %}
+
+        <hr />
+
         {% for pp, form in pps_forms %}
             <h3>{{pp}}</h3>
             {% if pp.panelists.all %}
@@ -28,7 +40,7 @@
             {% if not pp.needs_panelists %}
                 <p><i>(This {{pp.type|lower}} has enough presenters already.)</i></p>
             {% endif %}
-            {{ form.as_p }}
+            {% include "precon/format_form_snippet.html" with form=form %}
         {% endfor %}
         <p class="submit-next">
             <input class="submitbutton" type="submit" value="Done!" />

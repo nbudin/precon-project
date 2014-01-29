@@ -62,6 +62,7 @@ def record_responses(request, nonce):
     participant = get_object_or_404(Participant, nonce=nonce)
 
     if request.method == 'POST':
+        participant_form = ParticipantForm(request.POST, prefix='participant', instance=participant)
         pps_forms = build_forms(participant, request.POST)
         if all([f.is_valid() for pp, f in pps_forms]):
             for pp, f in pps_forms:
@@ -72,9 +73,14 @@ def record_responses(request, nonce):
 
             return HttpResponseRedirect(reverse('survey_done', kwargs={'nonce': participant.nonce}))
     else:
+        participant_form = ParticipantForm(prefix='participant', instance=participant)
         pps_forms = build_forms(participant)
 
-    context = { 'participant': participant, 'pps_forms': pps_forms, }
+    context = {
+        'participant': participant,
+        'participant_form': participant_form,
+        'pps_forms': pps_forms,
+    }
     return render(request, 'precon/survey.html', context)
 
 
