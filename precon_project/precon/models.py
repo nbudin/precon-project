@@ -16,7 +16,7 @@ class Participant(models.Model):
     panel_proposals_responded = models.ManyToManyField('PanelProposal', through='PanelProposalResponse', related_name='participants_responded', null=True, blank=True)
     slots_available = models.ManyToManyField('Slot', verbose_name="At which of these times would you be available **and happy** to sit on panels?", related_name='participants_available', null=True, blank=True)
     slots_maybe = models.ManyToManyField('Slot', verbose_name="At which of these times would you be available to sit on panels?", related_name='participants_maybe', null=True, blank=True)
-    anything_else = models.TextField(max_length=1000, null=True, blank=True)
+    anything_else = models.TextField("Anything else you'd like to tell us?", max_length=1000, null=True, blank=True)
 
     def responses(self):
         return PanelProposalResponses.objects.filter(participant=self)
