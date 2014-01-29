@@ -51,7 +51,16 @@ SERVER_EMAIL = EMAIL_HOST_USER
 ########## END EMAIL CONFIGURATION
 
 ########## DATABASE CONFIGURATION
-DATABASES = {}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'precon',
+        'USER': 'precon',
+        'PASSWORD': 'RejNidsej4',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 ########## END DATABASE CONFIGURATION
 
 
