@@ -29,7 +29,19 @@ class Panelist(models.Model):
 
 
 class PanelProposal(models.Model):
+    PANEL = 'Panel'
+    TALK = 'Talk'
+    WORKSHOP = 'Workshop'
+    DISCUSSION = 'Discussion'
+    TYPE_CHOICES = (
+        (PANEL, PANEL),
+        (TALK, TALK),
+        (WORKSHOP, WORKSHOP),
+        (DISCUSSION, DISCUSSION),
+    )
+
     name = models.CharField(max_length=100, unique=True)
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES, default=PANEL)
     blurb = models.TextField(max_length=4000)
     needs_panelists = models.BooleanField(default=True)
     panelists = models.ManyToManyField(Panelist, blank=True)
@@ -38,7 +50,7 @@ class PanelProposal(models.Model):
         return PanelProposalResponses.objects.filter(panel_proposal=self)
 
     def __unicode__(self):
-        return "Proposal: \"%s\"" % (self.name,)
+        return "%s Proposal: \"%s\"" % (self.type, self.name,)
 
 
 class PanelProposalResponse(models.Model):
@@ -58,8 +70,8 @@ class PanelProposalResponse(models.Model):
 
     participant = models.ForeignKey(Participant)
     panel_proposal = models.ForeignKey(PanelProposal)
-    attending_interest = models.CharField(max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
-    presenting_interest = models.CharField(max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
+    attending_interest = models.CharField("How interested would you be in attending this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
+    presenting_interest = models.CharField("How interested would you be in presenting at this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
     comments = models.TextField(max_length=1000, blank=True)
 
     def __unicode__(self):

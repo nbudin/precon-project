@@ -4,12 +4,28 @@
 
 {% block page_title %}Precon Survey: {{ participant.name }}{% endblock %}
 
+{% block extra_css %}
+   <style>
+   textarea {
+    height: 4em;
+    width: 40em;
+   }
+   </style>
+{% endblock %}
+
 {% block content %}
 
     <form class="record-responses" enctype="multipart/form-data" action="{% url 'record_responses' nonce=participant.nonce %}" method="post">
         {% csrf_token %}
         {% for pp, form in pps_forms %}
-            {{ pp }}
+            <h3>{{pp}}</h3>
+            {% if pp.panelists.all %}
+                <p><b>Presenters: {{pp.panelists.all|join:", "}}{% if pp.needs_panelists %} <i>(and you?)</i>{% endif %}</b></p>
+            {% endif %}
+            <blockquote>{{ pp.blurb }}</blockquote>
+            {% if not pp.needs_panelists %}
+                <p><i>(This {{pp.type|lower}} is full.)</i></p>
+            {% endif %}
             {{ form.as_p }}
         {% endfor %}
         <p class="submit-next">

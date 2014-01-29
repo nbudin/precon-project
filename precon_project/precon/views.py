@@ -17,6 +17,17 @@ class PanelProposalResponseForm(ModelForm):
         model = PanelProposalResponse
         fields = ['attending_interest', 'presenting_interest', 'comments']
 
+class PanelProposalResponseNoPresentingForm(ModelForm):
+    class Meta:
+        model = PanelProposalResponse
+        fields = ['attending_interest', 'comments']
+
+def panelproposalresponseform_factory(pp, **kwargs):
+    if pp.needs_panelists:
+        return PanelProposalResponseForm(**kwargs)
+    else:
+        return PanelProposalResponseNoPresentingForm(**kwargs)
+
 
 def create_participant(request):
     if request.method == 'POST':
@@ -39,9 +50,12 @@ def build_forms(participant, post_data=None):
     for pp in panel_proposals:
         try:
             ppr = PanelProposalResponse.objects.get(participant=participant, panel_proposal=pp)
-            panel_proposal_response_forms.append( ( pp, PanelProposalResponseForm(data=post_data, instance=ppr, prefix=pfx(pp)) ) )
+            ppf = panelproposalresponseform_factory(pp, data=post_data, instance=ppr, prefix=pfx(pp))
         except PanelProposalResponse.DoesNotExist:
-            panel_proposal_response_forms.append( ( pp, PanelProposalResponseForm(data=post_data, instance=PanelProposalResponse(), prefix=pfx(pp)) ) )
+            ppf = panelproposalresponseform_factory(pp, data=post_data, instance=PanelProposalResponse(), prefix=pfx(pp))
+
+        panel_proposal_response_forms.append( ( pp, ppf ) )
+
     return panel_proposal_response_forms
 
 def record_responses(request, nonce):
