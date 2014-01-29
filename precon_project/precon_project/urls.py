@@ -6,7 +6,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', TemplateView.as_view(template_name='precon/home.html')),
+    url(r'^$', TemplateView.as_view(template_name='precon/home.html'), name='home'),
 
     # Examples:
     # url(r'^$', 'precon_project.views.home', name='home'),
