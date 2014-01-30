@@ -19,3 +19,5 @@ build
 
 # static files
 precon_project/assets
+
+precon_project/envs.sh
