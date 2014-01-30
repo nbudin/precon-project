@@ -14,6 +14,7 @@ class Participant(models.Model):
     email = models.EmailField(max_length=50)
     phone = models.CharField("Phone number", max_length=15, null=True, blank=True, help_text="If you're interested in presenting (as a panelist etc.), please give us a phone number so we can reach you during the convention if necessary.")
     panel_proposals_responded = models.ManyToManyField('PanelProposal', through='PanelProposalResponse', related_name='participants_responded', null=True, blank=True)
+    slots_attending = models.ManyToManyField('Slot', verbose_name="At which of these times do you expect to be in attendance at Precon?", related_name='participants_attending', null=True, blank=True)
     slots_available = models.ManyToManyField('Slot', verbose_name="At which of these times would you be available **and happy** to sit on panels?", related_name='participants_available', null=True, blank=True)
     slots_maybe = models.ManyToManyField('Slot', verbose_name="At which of these times would you be available to sit on panels?", related_name='participants_maybe', null=True, blank=True)
     anything_else = models.TextField("Anything else you'd like to tell us?", max_length=1000, null=True, blank=True)
