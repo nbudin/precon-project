@@ -19,6 +19,11 @@
    form.record-responses {
     max-width: 40em;
    }
+   div.survey-section {
+    background-color: #eee;
+    padding: 1em;
+    min-width: 44em;
+   }
    </style>
 {% endblock %}
 
@@ -31,12 +36,15 @@
 
         <hr />
 
+        <div class="survey-section">
         <h3>About You</h3>
         {% include "precon/format_form_snippet.html" with form=participant_form %}
+        </div>
 
         <hr />
 
         {% for pp, form in pps_forms %}
+            <div class="survey-section">
             <h3>{{pp}}</h3>
             {% if pp.panelists.all %}
                 <p>Presenters: {{pp.panelists.all|join:", "}}{% if pp.needs_panelists %} <i>(and you?)</i>{% endif %}</p>
@@ -48,10 +56,17 @@
                 <p><i>(This {{pp.type|lower}} has enough presenters already.)</i></p>
             {% endif %}
             {% include "precon/format_form_snippet.html" with form=form %}
+            </div>
             
             <hr />
         {% endfor %}
+
+        <div class="survey-section">
         {{ anything_else_form.as_p }}
+        </div>
+
+        <hr />
+
         <p class="submit-next">
             <input class="submitbutton" type="submit" value="Done!" />
         </p>
