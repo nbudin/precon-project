@@ -23,6 +23,10 @@
     background-color: #eee;
     padding: 1em;
     min-width: 44em;
+    margin: 2em 0em;
+   }
+   p.submit-next {
+    text-align: center;
    }
    </style>
 {% endblock %}
@@ -32,16 +36,14 @@
     <form class="record-responses" enctype="multipart/form-data" action="{% url 'record_responses' nonce=participant.nonce %}" method="post">
         {% csrf_token %}
 
+        <div class="survey-section">
         <p>Fields in <b>bold</b> are required.</p>
-
-        <hr />
+        </div>
 
         <div class="survey-section">
         <h3>About You</h3>
         {% include "precon/format_form_snippet.html" with form=participant_form %}
         </div>
-
-        <hr />
 
         {% for pp, form in pps_forms %}
             <div class="survey-section">
@@ -57,19 +59,15 @@
             {% endif %}
             {% include "precon/format_form_snippet.html" with form=form %}
             </div>
-            
-            <hr />
         {% endfor %}
 
         <div class="survey-section">
         {{ anything_else_form.as_p }}
-        </div>
-
-        <hr />
 
         <p class="submit-next">
             <input class="submitbutton" type="submit" value="Done!" />
         </p>
+        </div>
     </form>
 
 {% endblock %}
