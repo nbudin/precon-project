@@ -15,14 +15,16 @@ class ParticipantForm(ModelForm):
 class FullParticipantForm(ModelForm):
     class Meta:
         model = Participant
-        fields = ['name', 'email', 'phone', 'max_panels', 'slots_maybe', 'slots_available',]
+        fields = ['name', 'email', 'phone', 'max_panels', 'slots_attending', 'slots_maybe', 'slots_available',]
         widgets = {
+            'slots_attending': CheckboxSelectMultiple(),
             'slots_available': CheckboxSelectMultiple(),
             'slots_maybe': CheckboxSelectMultiple(),
         }
     # workaround for https://code.djangoproject.com/ticket/9321
     def __init__(self, *args, **kwargs):
         super(FullParticipantForm, self).__init__(*args, **kwargs)
+        self.fields['slots_attending'].help_text = ''
         self.fields['slots_available'].help_text = ''
         self.fields['slots_maybe'].help_text = ''
 
