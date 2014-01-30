@@ -54,6 +54,9 @@
                 <p>Presenters: <i>(your name here?)</i></p>
             {% endif %}
             <blockquote>{{ pp.blurb }}</blockquote>
+            {% if pp.suggested_by %}
+                <p>Suggested by: {{pp.suggested_by}}</p>
+            {% endif %}
             {% if not pp.needs_panelists %}
                 <p><i>(This {{pp.type|lower}} has enough presenters already.)</i></p>
             {% endif %}

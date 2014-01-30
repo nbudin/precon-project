@@ -15,7 +15,7 @@ class ParticipantForm(ModelForm):
 class FullParticipantForm(ModelForm):
     class Meta:
         model = Participant
-        fields = ['name', 'email', 'phone', 'slots_maybe', 'slots_available']
+        fields = ['name', 'email', 'phone', 'max_panels', 'slots_maybe', 'slots_available',]
         widgets = {
             'slots_available': CheckboxSelectMultiple(),
             'slots_maybe': CheckboxSelectMultiple(),

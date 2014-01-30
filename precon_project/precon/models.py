@@ -18,6 +18,21 @@ class Participant(models.Model):
     slots_maybe = models.ManyToManyField('Slot', verbose_name="At which of these times would you be available to sit on panels?", related_name='participants_maybe', null=True, blank=True)
     anything_else = models.TextField("Anything else you'd like to tell us?", max_length=1000, null=True, blank=True)
 
+    MAX_PANELS_CHOICES = (
+        ('0', '0'),
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('6', '6'),
+        ('7', '7'),
+        ('8', '8'),
+        ('9', '9'),
+        ('10', '10'),
+    )
+    max_panels = models.CharField("How many panels/other events can we schedule you to present for at MAXIMUM?", max_length=10, choices=MAX_PANELS_CHOICES, default='0')
+
     def responses(self):
         return PanelProposalResponses.objects.filter(participant=self)
 
@@ -48,7 +63,8 @@ class PanelProposal(models.Model):
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default=PANEL)
     blurb = models.TextField(max_length=4000)
     needs_panelists = models.BooleanField(default=True)
-    panelists = models.ManyToManyField(Panelist, null=True, blank=True)
+    panelists = models.ManyToManyField(Panelist, related_name='panelproposals_panelist', null=True, blank=True)
+    suggested_by = models.ForeignKey(Panelist, related_name='panelproposals_suggested', null=True, blank=True)
 
     def responses(self):
         return PanelProposalResponses.objects.filter(panel_proposal=self)
