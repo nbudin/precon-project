@@ -52,11 +52,13 @@ class PanelProposal(models.Model):
     TALK = 'Talk'
     WORKSHOP = 'Workshop'
     DISCUSSION = 'Discussion'
+    TABLETOP = 'Tabletop Game'
     TYPE_CHOICES = (
         (PANEL, PANEL),
         (TALK, TALK),
         (WORKSHOP, WORKSHOP),
         (DISCUSSION, DISCUSSION),
+        (TABLETOP, TABLETOP),
     )
 
     name = models.CharField(max_length=100, unique=True)
