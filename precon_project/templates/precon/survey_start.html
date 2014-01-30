@@ -6,6 +6,19 @@
 
 {% block content %}
 
+    <p>
+    The purpose of this survey is threefold:
+    <ul>
+    <li>Gauging interest in panel proposals
+    <li>Calling for panelist volunteers
+    <li>Collecting scheduling information from panelists and potential panelists
+    </ul>
+    </p>
+
+    <p><b>The deadline for responding is Friday, February 7, 2014.</b></p>  We will have a schedule up and distributed shortly after that.
+
+    <hr />
+
     <form class="create-participant" enctype="multipart/form-data" action="{% url 'create_participant' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
