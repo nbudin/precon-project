@@ -58,15 +58,30 @@ class PanelProposal(models.Model):
 
 
 class PanelProposalResponse(models.Model):
-    NOT_INTERESTED = 'not interested'
-    ACTIVELY_DISINTERESTED = 'actively disinterested'
-    POTENTIALLY_INTERESTED = 'potentially interested'
-    I_HAVE_TO_BE_THERE = 'I have to be there'
-    INTEREST_CHOICES = (
-        (NOT_INTERESTED, NOT_INTERESTED),
-        (ACTIVELY_DISINTERESTED, ACTIVELY_DISINTERESTED),
-        (POTENTIALLY_INTERESTED, POTENTIALLY_INTERESTED),
-        (I_HAVE_TO_BE_THERE, I_HAVE_TO_BE_THERE),
+    PRESENTING_NOT_INTERESTED = 'not interested in presenting'
+    PRESENTING_IF_NEEDED = 'could be a presenter if needed'
+    PRESENTING_INTERESTED = 'would be interested in presenting'
+    PRESENTING_PICK_ME = 'would like to present'
+
+    PRESENTING_INTEREST_CHOICES = (
+        (PRESENTING_NOT_INTERESTED, PRESENTING_NOT_INTERESTED),
+        (PRESENTING_IF_NEEDED, PRESENTING_IF_NEEDED),
+        (PRESENTING_INTERESTED, PRESENTING_INTERESTED),
+        (PRESENTING_PICK_ME, PRESENTING_PICK_ME),
+    )
+
+    ATTENDING_ACTIVELY_DISINTERESTED = 'actively disinterested in attending'
+    ATTENDING_NOT_INTERESTED = 'not interested in attending'
+    ATTENDING_POTENTIALLY_INTERESTED = 'might attend'
+    ATTENDING_INTERESTED = 'will likely attend'
+    ATTENDING_DEFINITELY_INTERESTED = 'will definitely attend'
+
+    ATTENDING_INTEREST_CHOICES = (
+        (ATTENDING_ACTIVELY_DISINTERESTED, ATTENDING_ACTIVELY_DISINTERESTED),
+        (ATTENDING_NOT_INTERESTED, ATTENDING_NOT_INTERESTED),
+        (ATTENDING_POTENTIALLY_INTERESTED, ATTENDING_POTENTIALLY_INTERESTED),
+        (ATTENDING_INTERESTED, ATTENDING_INTERESTED),
+        (ATTENDING_DEFINITELY_INTERESTED, ATTENDING_DEFINITELY_INTERESTED),
     )
 
     creation_time = models.DateTimeField(auto_now_add=True, editable=False)
@@ -74,8 +89,8 @@ class PanelProposalResponse(models.Model):
 
     participant = models.ForeignKey(Participant)
     panel_proposal = models.ForeignKey(PanelProposal)
-    attending_interest = models.CharField("How interested would you be in attending this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
-    presenting_interest = models.CharField("How interested would you be in presenting at this event?", max_length=50, choices=INTEREST_CHOICES, default=NOT_INTERESTED)
+    attending_interest = models.CharField("How interested would you be in attending this event?", max_length=50, choices=ATTENDING_INTEREST_CHOICES, default=ATTENDING_NOT_INTERESTED)
+    presenting_interest = models.CharField("How interested would you be in presenting at this event?", max_length=50, choices=PRESENTING_INTEREST_CHOICES, default=PRESENTING_NOT_INTERESTED)
     presenting_comments = models.TextField("What (if applicable) makes you interested in presenting at this event?", max_length=1000, null=True, blank=True)
     attending_comments = models.TextField("Any comments?", max_length=1000, null=True, blank=True)
 
