@@ -78,12 +78,14 @@ class PanelProposalResponse(models.Model):
     PRESENTING_IF_NEEDED = 'could be a presenter if needed'
     PRESENTING_INTERESTED = 'would be interested in presenting'
     PRESENTING_PICK_ME = 'would like to present'
+    PRESENTING_SUGGESTER = 'I suggested this, and I would like to present'
 
     PRESENTING_INTEREST_CHOICES = (
         (PRESENTING_NOT_INTERESTED, PRESENTING_NOT_INTERESTED),
         (PRESENTING_IF_NEEDED, PRESENTING_IF_NEEDED),
         (PRESENTING_INTERESTED, PRESENTING_INTERESTED),
         (PRESENTING_PICK_ME, PRESENTING_PICK_ME),
+        (PRESENTING_SUGGESTER, PRESENTING_SUGGESTER),
     )
 
     ATTENDING_ACTIVELY_DISINTERESTED = 'actively disinterested in attending'
