@@ -109,7 +109,7 @@ class PanelProposalResponse(models.Model):
     panel_proposal = models.ForeignKey(PanelProposal)
     attending_interest = models.CharField("How interested would you be in attending this event?", max_length=50, choices=ATTENDING_INTEREST_CHOICES, default=ATTENDING_NOT_INTERESTED)
     presenting_interest = models.CharField("How interested would you be in presenting at this event?", max_length=50, choices=PRESENTING_INTEREST_CHOICES, default=PRESENTING_NOT_INTERESTED)
-    presenting_comments = models.TextField("What (if applicable) makes you interested in presenting at this event?", max_length=1000, null=True, blank=True)
+    presenting_comments = models.TextField("What (if applicable) makes you interested in presenting at this event?", max_length=1000, null=True, blank=True, help_text="If you suggested this and said so in the field above, you don't need to fill this out.")
     attending_comments = models.TextField("Any comments?", max_length=1000, null=True, blank=True)
 
     def __unicode__(self):
