@@ -35,7 +35,8 @@ class WSGIEnvironment(WSGIHandler):
 
     def __call__(self, environ, start_response):
 
-        os.environ['SECRET_KEY'] = environ['SECRET_KEY']
+        if 'SECRET_KEY' in environ:
+            os.environ['SECRET_KEY'] = environ['SECRET_KEY']
         return super(WSGIEnvironment, self).__call__(environ, start_response)
 
 application = WSGIEnvironment()
