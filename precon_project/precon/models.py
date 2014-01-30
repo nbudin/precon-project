@@ -10,9 +10,9 @@ class Participant(models.Model):
     modification_time = models.DateTimeField(auto_now=True, editable=False)
     nonce = models.CharField(default=lambda: id_generator(size=6), unique=True, editable=False, max_length=6)
 
-    name = models.CharField("Your name, as you would like it to appear in any published material", max_length=50)
+    name = models.CharField(max_length=50, help_text="Your name, as you would like it to appear in any published material")
     email = models.EmailField(max_length=50)
-    phone = models.CharField("Phone number", max_length=15, null=True, blank=True, help_text="Not for use in scheduling, but so we have it on record, so we can get in touch with you at the con if we need to for some reason. (Eg. you aren't at your panel and it's ten minutes past the scheduled start time.)")
+    phone = models.CharField("Phone number", max_length=15, null=True, blank=True, help_text="If you're interested in presenting (as a panelist etc.), please give us a phone number so we can reach you during the convention if necessary.")
     panel_proposals_responded = models.ManyToManyField('PanelProposal', through='PanelProposalResponse', related_name='participants_responded', null=True, blank=True)
     slots_available = models.ManyToManyField('Slot', verbose_name="At which of these times would you be available **and happy** to sit on panels?", related_name='participants_available', null=True, blank=True)
     slots_maybe = models.ManyToManyField('Slot', verbose_name="At which of these times would you be available to sit on panels?", related_name='participants_maybe', null=True, blank=True)

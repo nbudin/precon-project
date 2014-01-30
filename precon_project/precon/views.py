@@ -20,6 +20,11 @@ class FullParticipantForm(ModelForm):
             'slots_available': CheckboxSelectMultiple(),
             'slots_maybe': CheckboxSelectMultiple(),
         }
+    # workaround for https://code.djangoproject.com/ticket/9321
+    def __init__(self, *args, **kwargs):
+        super(FullParticipantForm, self).__init__(*args, **kwargs)
+        self.fields['slots_available'].help_text = ''
+        self.fields['slots_maybe'].help_text = ''
 
 class ParticipantAnythingElseForm(ModelForm):
     class Meta:
