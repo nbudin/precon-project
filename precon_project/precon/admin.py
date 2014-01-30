@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 
 from precon.models import *
 
@@ -15,8 +16,15 @@ class PanelistInline(admin.StackedInline):
     model = Panelist
     fields = ['name']
 
+class PanelProposalForm(forms.ModelForm):
+    class Meta:
+        model = PanelProposal
+        widgets = {
+            'panelists': forms.CheckboxSelectMultiple(),
+        }
+
 class PanelProposalAdmin(admin.ModelAdmin):
-    pass
+    form = PanelProposalForm
 
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(PanelProposal, PanelProposalAdmin)
