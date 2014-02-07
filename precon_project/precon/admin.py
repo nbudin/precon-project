@@ -7,6 +7,10 @@ class PanelProposalResponseInline(admin.StackedInline):
     model = PanelProposalResponse
     extra = 0
 
+class PanelProposalResponseTabularInline(admin.TabularInline):
+    model = PanelProposalResponse
+    extra = 0
+
 class ParticipantAdmin(admin.ModelAdmin):
     inlines = [
         PanelProposalResponseInline,
@@ -25,6 +29,9 @@ class PanelProposalForm(forms.ModelForm):
 
 class PanelProposalAdmin(admin.ModelAdmin):
     form = PanelProposalForm
+    inlines = [
+        PanelProposalResponseTabularInline,
+    ]
 
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(PanelProposal, PanelProposalAdmin)
