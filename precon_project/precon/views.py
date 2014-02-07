@@ -3,6 +3,8 @@ from django.http import HttpResponseRedirect
 from django.forms import ModelForm, CheckboxSelectMultiple
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
+
 
 from models import Participant, PanelProposal, PanelProposalResponse
 
@@ -113,3 +115,11 @@ def survey_done(request, nonce):
 
     context = { 'participant': participant },
     return render(request, 'precon/survey_done.html', context)
+
+@login_required
+def results_dashboard(request):
+    ps = Participant.objects.all()
+    pps = PanelProposal.objects.all()
+    pprs = PanelProposalResponse.objects.all()
+    context = { 'participants': ps, 'panel_proposals': pps, 'panel_proposal_responses': pprs }
+    return render(request, 'precon/results_dashboard.html', context)

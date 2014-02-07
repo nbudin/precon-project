@@ -35,7 +35,7 @@ class Participant(models.Model):
     max_panels = models.CharField("How many panels/other events can we schedule you to present for at MAXIMUM?", max_length=10, choices=MAX_PANELS_CHOICES, default='0')
 
     def responses(self):
-        return PanelProposalResponses.objects.filter(participant=self)
+        return PanelProposalResponse.objects.filter(participant=self)
 
     def __unicode__(self):
         return self.name
@@ -70,7 +70,7 @@ class PanelProposal(models.Model):
     suggested_by = models.ForeignKey(Panelist, related_name='panelproposals_suggested', null=True, blank=True)
 
     def responses(self):
-        return PanelProposalResponses.objects.filter(panel_proposal=self)
+        return PanelProposalResponse.objects.filter(panel_proposal=self)
 
     def __unicode__(self):
         return "%s Proposal: \"%s\"" % (self.type, self.name,)
