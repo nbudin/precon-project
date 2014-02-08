@@ -88,7 +88,9 @@ def record_responses(request, nonce):
         participant_form = FullParticipantForm(request.POST, prefix='participant', instance=participant)
         anything_else_form = ParticipantAnythingElseForm(request.POST, prefix='anythingelse', instance=participant)
         pps_forms = build_forms(participant, request.POST)
-        if all([f.is_valid() for pp, f in pps_forms]):
+        if participant_form.is_valid() and anything_else_form.is_valid() and all([f.is_valid() for pp, f in pps_forms]):
+            participant_form.save()
+            anything_else_form.save()
             for pp, f in pps_forms:
                 ppr = f.save(commit=False)
                 ppr.participant = participant
