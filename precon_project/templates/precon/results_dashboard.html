@@ -64,6 +64,15 @@
     {% endfor %}
     </ul>
 
+    <h2>Anything else?</h2>
+    <ul>
+    {% for p in participants %}
+        {% if p.anything_else %}
+            <li>From {{p}}: <blockquote>{{p.anything_else}}</blockquote></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
     {% queryexclude participants panel_proposals_responded=None as completed %}
     <h2>Completed the Survey</h2>
     <ul>
