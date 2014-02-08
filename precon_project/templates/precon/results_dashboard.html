@@ -38,6 +38,7 @@
     {% for pp in panel_proposals %}
         {% if pp.needs_panelists %}
             <li><b>{{pp}}</b>:
+            <p><b>Panelists: </b>{% for p in pp.panelists.all %}{{p}}{% endfor %}</p>
             <ul>
                 <li>Suggester: {{pp.responses.presenting_suggesters.count}}
                     ({% for suggester in pp.responses.presenting_suggesters %}
@@ -92,9 +93,10 @@
     <p>Total: {{uncompleted.count}}</p>
 
     <h2>Panelists who need time preferences</h2>
+    Panelist,Email,Nonce<br />
     {% for panelist in panelists %}
         {% if not panelist.slots_maybe %}
-            {{panelist}} &lt;{{panelist.email}}&gt;,<br />
+            {{panelist}},{{panelist.participant.email}},{{panelist.participant.nonce}}<br />
         {% endif %}
     {% endfor %}
 
