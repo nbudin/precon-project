@@ -21,3 +21,13 @@ def queryexclude(qs, **kwargs):
           {% endfor %}
     """
     return qs.exclude(**kwargs)
+
+@register.assignment_tag
+def queryorderby(qs, *args):
+    """ template tag which allows queryset filtering. Usage:
+          {% query books author=author as mybooks %}
+          {% for book in mybooks %}
+            ...
+          {% endfor %}
+    """
+    return qs.order_by(*args)

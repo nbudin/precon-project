@@ -1,6 +1,7 @@
 import string, random
 
 from django.db import models
+from django.db.models.query import QuerySet
  
 def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
@@ -40,12 +41,18 @@ class Participant(models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 class Panelist(models.Model):
     name = models.CharField(max_length=50, unique=True)
     participant = models.ForeignKey(Participant, default=None, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __unicode__(self):
         return self.participant and self.participant.name or self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class PanelProposal(models.Model):
@@ -72,9 +79,34 @@ class PanelProposal(models.Model):
     def responses(self):
         return PanelProposalResponse.objects.filter(panel_proposal=self)
 
+    def attending_score(self):
+        rs = self.responses()
+        return (rs.attending_definitely_interesteds().count() * 3) + (rs.attending_interesteds().count() * 2) + rs.attending_potentially_interesteds().count()
+
+    def negativity(self):
+        return self.responses().attending_actively_disinteresteds().count()
+
     def __unicode__(self):
         return "%s Proposal: \"%s\"" % (self.type, self.name,)
 
+class PanelProposalResponseQuerySet(QuerySet):
+    presenting_not_interesteds = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_NOT_INTERESTED)
+    presenting_if_neededs = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_IF_NEEDED)
+    presenting_interesteds = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_INTERESTED)
+    presenting_pick_mes = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_PICK_ME)
+    presenting_suggesters = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_SUGGESTER)
+
+    attending_actively_disinteresteds = lambda x: x.filter(attending_interest=PanelProposalResponse.ATTENDING_ACTIVELY_DISINTERESTED)
+    attending_not_interesteds = lambda x: x.filter(attending_interest=PanelProposalResponse.ATTENDING_NOT_INTERESTED)
+    attending_potentially_interesteds = lambda x: x.filter(attending_interest=PanelProposalResponse.ATTENDING_POTENTIALLY_INTERESTED)
+    attending_interesteds = lambda x: x.filter(attending_interest=PanelProposalResponse.ATTENDING_INTERESTED)
+    attending_definitely_interesteds = lambda x: x.filter(attending_interest=PanelProposalResponse.ATTENDING_DEFINITELY_INTERESTED)
+
+class PanelProposalResponseManager(models.Manager):
+    def get_query_set(self):
+        return PanelProposalResponseQuerySet(self.model)
+    def __getattr__(self, name):
+        return getattr(self.get_query_set(), name)
 
 class PanelProposalResponse(models.Model):
     PRESENTING_NOT_INTERESTED = 'not interested in presenting'
@@ -114,6 +146,9 @@ class PanelProposalResponse(models.Model):
     presenting_interest = models.CharField("How interested would you be in presenting at this event?", max_length=50, choices=PRESENTING_INTEREST_CHOICES, default=PRESENTING_NOT_INTERESTED)
     presenting_comments = models.TextField("What (if applicable) makes you interested in presenting at this event?", max_length=1000, null=True, blank=True, help_text="If you suggested this and said so in the field above, you don't need to fill this out.")
     attending_comments = models.TextField("Any comments?", max_length=1000, null=True, blank=True)
+
+    # managers
+    objects = PanelProposalResponseManager()
 
     def __unicode__(self):
         return "Response: \"%s\": %s" % (self.panel_proposal.name, self.participant)

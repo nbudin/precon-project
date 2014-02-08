@@ -8,11 +8,18 @@
 
 {% block content %}
 
-    <h2>Attending Comments</h2>
+    <h2>Attending</h2>
     <ul>
     {% for pp in panel_proposals %}
-        {% if pp.responses %}
-            <li><b>{{pp}}</b>:
+        <li><b>{{pp}}</b>:
+        <p>Interest:</p>
+        <ul>
+            <li><b>Attending score: {{pp.attending_score}}</b></li>
+            <li>Definitely Interested: {{pp.responses.attending_definitely_interesteds.count}}</li>
+            <li>Interested: {{pp.responses.attending_interesteds.count}}</li>
+            <li>Potentially Interested: {{pp.responses.attending_potentially_interesteds.count}}</li>
+            <li>Actively Disinterested: {{pp.responses.attending_actively_disinteresteds.count}}</li>
+            <li>Comments:
             <ul>
             {% for ppr in pp.responses %}
                 {% if ppr.attending_comments %}
@@ -21,15 +28,30 @@
             {% endfor %}
             </ul>
             </li>
-        {% endif %}
+            </ul>
+            </li>
     {% endfor %}
     </ul>
 
     <h2>Presenting Comments</h2>
     <ul>
     {% for pp in panel_proposals %}
-        {% if pp.responses %}
+        {% if pp.needs_panelists %}
             <li><b>{{pp}}</b>:
+            <ul>
+                <li>Suggester: {{pp.responses.presenting_suggesters.count}}
+                    ({% for suggester in pp.responses.presenting_suggesters %}
+                        {{suggester.participant}},
+                    {% endfor %})
+                </li>
+                <li>Would like to present: {{pp.responses.presenting_pick_mes.count}}
+                    ({% for wouldlike in pp.responses.presenting_pick_mes %}
+                        {{wouldlike.participant}},
+                    {% endfor %})
+                </li>
+                <li>Interested: {{pp.responses.presenting_interesteds.count}}</li>
+                <li>If needed: {{pp.responses.presenting_if_neededs.count}}</li>
+            </ul>
             <ul>
             {% for ppr in pp.responses %}
                 {% if ppr.presenting_comments %}
@@ -60,4 +82,17 @@
     </ul>
     <p>Total: {{uncompleted.count}}</p>
 
+    <h2>Panelists who need time preferences</h2>
+    {% for panelist in panelists %}
+        {% if not panelist.slots_maybe %}
+            {{panelist}} &lt;{{panelist.email}}&gt;,<br />
+        {% endif %}
+    {% endfor %}
+
+    <h2>Most Negative</h2>
+    <ul>
+    {% for pp in most_negative %}
+        <li>{{pp}}: {{pp.negativity}}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}
