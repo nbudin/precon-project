@@ -85,18 +85,25 @@
 
     {% queryfilter participants panel_proposals_responded=None as uncompleted %}
     <h2>Did Not Complete the Survey</h2>
-    <ul>
+    Panelist,Email,Nonce<br />
     {% for p in uncompleted %}
-        <li>{{p}}</li>
+        {{p}},{{p.email}},{{p.nonce}}<br />
     {% endfor %}
-    </ul>
     <p>Total: {{uncompleted.count}}</p>
 
     <h2>Panelists who need time preferences</h2>
     Panelist,Email,Nonce<br />
     {% for panelist in panelists %}
-        {% if not panelist.slots_maybe %}
+        {% if not panelist.participant.slots_maybe.count %}
             {{panelist}},{{panelist.participant.email}},{{panelist.participant.nonce}}<br />
+        {% endif %}
+    {% endfor %}
+
+    <h2>People who expressed interest in paneling who need time preferences</h2>
+    Participant,Email,Nonce<br />
+    {% for participant in participants %}
+        {% if participant.responses.presenting_all and not participant.panelists.count and not participant.slots_maybe.count %}
+            {{participant}},{{participant.email}},{{participant.nonce}}<br />
         {% endif %}
     {% endfor %}
 

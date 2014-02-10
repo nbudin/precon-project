@@ -46,7 +46,7 @@ class Participant(models.Model):
 
 class Panelist(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    participant = models.ForeignKey(Participant, default=None, null=True, blank=True, on_delete=models.SET_NULL)
+    participant = models.ForeignKey(Participant, default=None, null=True, blank=True, related_name='panelists', on_delete=models.SET_NULL)
 
     def __unicode__(self):
         return self.participant and self.participant.name or self.name
@@ -91,6 +91,7 @@ class PanelProposal(models.Model):
 
 class PanelProposalResponseQuerySet(QuerySet):
     presenting_not_interesteds = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_NOT_INTERESTED)
+    presenting_all = lambda x: x.exclude(presenting_interest=PanelProposalResponse.PRESENTING_NOT_INTERESTED)
     presenting_if_neededs = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_IF_NEEDED)
     presenting_interesteds = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_INTERESTED)
     presenting_pick_mes = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_PICK_ME)

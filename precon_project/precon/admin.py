@@ -20,6 +20,10 @@ class PanelistInline(admin.StackedInline):
     model = Panelist
     fields = ['name']
 
+class PanelProposalInline(admin.StackedInline):
+    model = PanelProposal
+    fields = ['name']
+
 class PanelProposalForm(forms.ModelForm):
     class Meta:
         model = PanelProposal
@@ -33,11 +37,16 @@ class PanelProposalAdmin(admin.ModelAdmin):
         PanelProposalResponseTabularInline,
     ]
 
+class PanelistAdmin(admin.ModelAdmin):
+    inlines = [
+        PanelProposalInline
+    ]
+
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(PanelProposal, PanelProposalAdmin)
 admin.site.register(PanelProposalResponse)
 admin.site.register(Panel)
-admin.site.register(Panelist)
+admin.site.register(Panelist, PanelistAdmin)
 admin.site.register(Schedule)
 admin.site.register(Slot)
 admin.site.register(SiteConfig)
