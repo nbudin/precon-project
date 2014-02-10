@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Precon Panels{% endblock %}
+
+{% block extra_css %}
+    <style>
+       div.section {
+        background-color: #eee;
+        padding: 1em;
+        max-width: 44em;
+        margin: 2em 0em;
+       }
+       div:target {
+        background-color: #ffa;
+       }
+    </style>
+{% endblock %}
+
+{% block page_title %}Precon Panels{% endblock %}
+
+{% block content %}
+
+{% for panel in panels %}
+
+    <div class="section" id="{{panel.anchor}}">
+        <h3>{{panel.name}}</h3>
+        <p>{{panel.room}} - {{panel.slot}}</p>
+        <p>Presenters: {{ panel.panelists.all | join:",  "}}</p>
+        <em>{{panel.blurb}}</em>
+    </div>
+
+{% endfor %}
+
+{% endblock %}

@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
 
-from models import Panelist, Participant, PanelProposal, PanelProposalResponse
+from models import Panelist, Participant, PanelProposal, PanelProposalResponse, Slot, Room, Panel
 
 
 class ParticipantForm(ModelForm):
@@ -141,3 +141,26 @@ def results_dashboard(request):
     }
 
     return render(request, 'precon/results_dashboard.html', context)
+
+def schedule(request):
+    slots = Slot.objects.all()
+    rooms = Room.objects.all()
+
+    table_contents = zip(slots, [ zip(rooms, [ slot.get_panel_for_room(room) for room in rooms ]) for slot in slots ])
+
+    context = {
+        'slots': slots,
+        'rooms': rooms,
+        'table_contents': table_contents,
+    }
+
+    return render(request, 'precon/schedule.html', context)
+
+def panel_list(request):
+    panels = Panel.objects.all()
+
+    context = {
+        'panels': panels,
+    }
+
+    return render(request, 'precon/panel_list.html', context)
