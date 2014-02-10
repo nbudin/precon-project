@@ -5,3 +5,4 @@ django-model-utils==1.4.0
 logutils==0.3.3
 South==0.8.1
 MySQL-python
+-e git+https://github.com/eomahony/Numberjack.git#egg=Numberjack
