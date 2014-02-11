@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Precon Scheduling{% endblock %}
+
+{% block page_title %}Precon Scheduling{% endblock %}
+
+{% block content %}
+
+    <h2>Presenting Comments</h2>
+    <ul>
+    {% for pp in panel_proposals %}
+        {% if pp.needs_panelists %}
+            <li><b>{{pp}}</b>:
+            <p><b>Panelists: </b>{% for p in pp.panelists.all %}{{p}}{% endfor %}</p>
+            <ul>
+                <li>Suggester: {{pp.responses.presenting_suggesters.count}}
+                    ({% for suggester in pp.responses.presenting_suggesters %}
+                        {{suggester.participant}},
+                    {% endfor %})
+                </li>
+                <li>Would like to present: {{pp.responses.presenting_pick_mes.count}}
+                    ({% for wouldlike in pp.responses.presenting_pick_mes %}
+                        {{wouldlike.participant}},
+                    {% endfor %})
+                </li>
+                <li>Interested: {{pp.responses.presenting_interesteds.count}}</li>
+                <li>If needed: {{pp.responses.presenting_if_neededs.count}}</li>
+            </ul>
+            <ul>
+            {% for ppr in pp.responses %}
+                {% if ppr.presenting_comments %}
+                    <li>From {{ppr.participant}}: <blockquote>{{ppr.presenting_comments}}</blockquote></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+            </li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+{% endblock %}

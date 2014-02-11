@@ -89,6 +89,9 @@ class PanelProposal(models.Model):
     def __unicode__(self):
         return "%s Proposal: \"%s\"" % (self.type, self.name,)
 
+    class Meta:
+        ordering = ['name']
+
 class PanelProposalResponseQuerySet(QuerySet):
     presenting_not_interesteds = lambda x: x.filter(presenting_interest=PanelProposalResponse.PRESENTING_NOT_INTERESTED)
     presenting_all = lambda x: x.exclude(presenting_interest=PanelProposalResponse.PRESENTING_NOT_INTERESTED)

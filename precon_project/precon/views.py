@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
 
-from models import Panelist, Participant, PanelProposal, PanelProposalResponse
+from models import Panelist, Participant, PanelProposal, PanelProposalResponse, Slot
 
 
 class ParticipantForm(ModelForm):
@@ -141,3 +141,25 @@ def results_dashboard(request):
     }
 
     return render(request, 'precon/results_dashboard.html', context)
+
+def scheduling(request):
+    slots = Slot.objects.all()
+    participants = Participant.objects.all()
+
+    context = {
+        'slots': slots,
+        'participants': participants,
+    }
+
+    return render(request, 'precon/scheduling.html', context)
+
+@login_required
+def presenting_dashboard(request):
+    pps = list(PanelProposal.objects.all())
+    pps.sort(lambda x, y: cmp(x.attending_score(), y.attending_score()), reverse=True)
+
+    context = {
+        'panel_proposals': pps,
+    }
+
+    return render(request, 'precon/presenting_dashboard.html', context)

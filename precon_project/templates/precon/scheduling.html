@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Precon Scheduling{% endblock %}
+
+{% block page_title %}Precon Scheduling{% endblock %}
+
+{% block content %}
+
+<table class="table table-condensed table-bordered table-striped table-hover">
+    <thead><tr>
+    <th>Participant</th>
+    <th>Max</th>
+    {% for slot in slots %}
+        <th>{{slot}}</th>
+    {% endfor %}
+    </tr></thead>
+    <tbody>
+    {% for participant in participants %}
+        <tr>
+        <th>{{participant.name}}</th>
+        <th>{{participant.max_panels}}</th>
+        {% for slot in slots %}
+            <td>
+            {% if slot in participant.slots_available.all %}
+                Yes
+            {% elif slot in participant.slots_maybe.all %}
+                Maybe
+            {% endif %}
+            </td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
