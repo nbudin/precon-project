@@ -164,10 +164,16 @@ class PanelProposalResponse(models.Model):
 
 class Panel(models.Model):
     PANEL = 'Panel'
+    PANEL_PRESENTER = 'Panelist'
     TALK = 'Talk'
+    TALK_PRESENTER = 'Speaker'
     WORKSHOP = 'Workshop'
+    WORKSHOP_PRESENTER = 'Leader'
     DISCUSSION = 'Discussion'
+    DISCUSSION_PRESENTER = 'Facilitator'
     TABLETOP = 'Tabletop Game'
+    TABLETOP_PRESENTER = 'GM'
+    
     TYPE_CHOICES = (
         (PANEL, PANEL),
         (TALK, TALK),
@@ -175,6 +181,14 @@ class Panel(models.Model):
         (DISCUSSION, DISCUSSION),
         (TABLETOP, TABLETOP),
     )
+
+    PRESENTER_TYPES = {
+        PANEL: PANEL_PRESENTER,
+        TALK: TALK_PRESENTER,
+        WORKSHOP: WORKSHOP_PRESENTER,
+        DISCUSSION: DISCUSSION_PRESENTER,
+        TABLETOP: TABLETOP_PRESENTER,
+    }
 
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default=PANEL)
     name = models.CharField(max_length=100, unique=True)
@@ -192,6 +206,9 @@ class Panel(models.Model):
 
     def panelists_nbsp(self):
         return [panelist.name_nbsp() for panelist in self.panelists.all()]
+
+    def presenter_type(self):
+        return self.PRESENTER_TYPES[self.type]
 
     class Meta:
         ordering = ['name']
