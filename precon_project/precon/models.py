@@ -182,6 +182,7 @@ class Panel(models.Model):
     panelists = models.ManyToManyField(Panelist, null=True, blank=True)
     slot = models.ForeignKey('Slot', related_name='panels', null=True, blank=True)
     room = models.ForeignKey('Room', related_name='panels', null=True, blank=True)
+    panel_proposal = models.ForeignKey('PanelProposal', related_name='panels_accepted', null=True, blank=True)
 
     def __unicode__(self):
         return "\"%s\"" % (self.name,)
