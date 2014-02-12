@@ -142,6 +142,30 @@ def results_dashboard(request):
 
     return render(request, 'precon/results_dashboard.html', context)
 
+@login_required
+def attending_dashboard(request):
+    ps = Participant.objects.all()
+
+    panelists = Panelist.objects.all()
+
+    pps = list(PanelProposal.objects.all())
+    pps.sort(lambda x, y: cmp(x.attending_score(), y.attending_score()), reverse=True)
+
+    most_negative = list(PanelProposal.objects.all())
+    most_negative.sort(lambda x, y: cmp(x.negativity(), y.negativity()), reverse=True)
+
+    pprs = PanelProposalResponse.objects.all()
+
+    context = { 
+        'participants': ps,
+        'panel_proposals': pps,
+        'panel_proposal_responses': pprs,
+        'most_negative': most_negative,
+        'panelists': panelists,
+    }
+
+    return render(request, 'precon/attending_dashboard.html', context)
+
 def scheduling(request):
     slots = Slot.objects.all()
     participants = Participant.objects.all()
@@ -155,11 +179,14 @@ def scheduling(request):
 
 @login_required
 def presenting_dashboard(request):
+    slots = Slot.objects.all()
+
     pps = list(PanelProposal.objects.all())
     pps.sort(lambda x, y: cmp(x.attending_score(), y.attending_score()), reverse=True)
 
     context = {
         'panel_proposals': pps,
+        'slots': slots,
     }
 
     return render(request, 'precon/presenting_dashboard.html', context)

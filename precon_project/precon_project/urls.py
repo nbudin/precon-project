@@ -21,6 +21,7 @@ urlpatterns = patterns('',
 
     url(r'^survey/$', 'precon.views.create_participant', name='create_participant'),
     url(r'^survey/results_dashboard/$', 'precon.views.results_dashboard', name='results_dashboard'),
+    url(r'^survey/attending_dashboard/$', 'precon.views.attending_dashboard', name='attending_dashboard'),
     url(r'^survey/presenting_dashboard/$', 'precon.views.presenting_dashboard', name='presenting_dashboard'),
     url(r'^survey/(?P<nonce>[\da-z]+)/$', 'precon.views.record_responses', name='record_responses'),
     url(r'^survey/(?P<nonce>[\da-z]+)/done/$', 'precon.views.survey_done', name='survey_done'),

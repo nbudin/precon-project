@@ -1,17 +1,34 @@
 {% extends "base.html" %}
 
-{% block title %}Precon Scheduling{% endblock %}
+{% block title %}Precon Presenting Dashboard{% endblock %}
 
-{% block page_title %}Precon Scheduling{% endblock %}
+{% block page_title %}Precon Presenting Dashboard{% endblock %}
 
 {% block content %}
 
     <h2>Presenting Comments</h2>
     <ul>
     {% for pp in panel_proposals %}
-        {% if pp.needs_panelists %}
             <li><b>{{pp}}</b>:
-            <p><b>Panelists: </b>{% for p in pp.panelists.all %}{{p}}{% endfor %}</p>
+            <p><b>Panelists: </b>{{ pp.panelists.all|join:", " }}</p>
+            {% if not pp.needs_panelists %}
+            <p>Times available:</p>
+            <ul>
+                {% for slot in slots %}
+                    <li>
+                    {{slot}}:
+                    {% for panelist in pp.panelists.all %}
+                        {% if slot in panelist.participant.slots_available.all %}
+                            {{panelist}},
+                        {% elif slot in panelist.participant.slots_maybe.all %}
+                            {{panelist}} (Maybe),
+                        {%endif %}
+                    {% endfor %}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if pp.needs_panelists %}
             <ul>
                 <li>Suggester: {{pp.responses.presenting_suggesters.count}}
                     ({% for suggester in pp.responses.presenting_suggesters %}
@@ -23,8 +40,16 @@
                         {{wouldlike.participant}},
                     {% endfor %})
                 </li>
-                <li>Interested: {{pp.responses.presenting_interesteds.count}}</li>
-                <li>If needed: {{pp.responses.presenting_if_neededs.count}}</li>
+                <li>Interested: {{pp.responses.presenting_interesteds.count}}
+                    ({% for interested in pp.responses.presenting_interesteds %}
+                        {{interested.participant}},
+                    {% endfor %})
+                </li>
+                <li>If needed: {{pp.responses.presenting_if_neededs.count}}
+                    ({% for if_needed in pp.responses.presenting_if_neededs %}
+                        {{if_needed.participant}},
+                    {% endfor %})
+                </li>
             </ul>
             <ul>
             {% for ppr in pp.responses %}
@@ -33,8 +58,8 @@
                 {% endif %}
             {% endfor %}
             </ul>
+            {% endif %}
             </li>
-        {% endif %}
     {% endfor %}
     </ul>
 

@@ -8,40 +8,6 @@
 
 {% block content %}
 
-    <h2>Attending</h2>
-    <ul>
-    {% for pp in panel_proposals %}
-        <li><b>{{pp}}</b>:
-        <p>Interest:</p>
-        <ul>
-            <li><b>Attending score: {{pp.attending_score}}</b></li>
-            <li>Definitely Interested: {{pp.responses.attending_definitely_interesteds.count}}</li>
-            <li>Interested: {{pp.responses.attending_interesteds.count}}</li>
-            <li>Potentially Interested: {{pp.responses.attending_potentially_interesteds.count}}</li>
-            <li>Actively Disinterested: {{pp.responses.attending_actively_disinteresteds.count}}</li>
-            <li>Comments:
-            <ul>
-            {% for ppr in pp.responses %}
-                {% if ppr.attending_comments %}
-                    <li>From {{ppr.participant}}: <blockquote>{{ppr.attending_comments}}</blockquote></li>
-                {% endif %}
-            {% endfor %}
-            </ul>
-            </li>
-            </ul>
-            </li>
-    {% endfor %}
-    </ul>
-
-    <h2>Anything else?</h2>
-    <ul>
-    {% for p in participants %}
-        {% if p.anything_else %}
-            <li>From {{p}}: <blockquote>{{p.anything_else}}</blockquote></li>
-        {% endif %}
-    {% endfor %}
-    </ul>
-
     {% queryexclude participants panel_proposals_responded=None as completed %}
     <h2>Completed the Survey</h2>
     <ul>
@@ -74,11 +40,4 @@
             {{participant}},{{participant.email}},{{participant.nonce}}<br />
         {% endif %}
     {% endfor %}
-
-    <h2>Most Negative</h2>
-    <ul>
-    {% for pp in most_negative %}
-        <li>{{pp}}: {{pp.negativity}}</li>
-    {% endfor %}
-    </ul>
 {% endblock %}
