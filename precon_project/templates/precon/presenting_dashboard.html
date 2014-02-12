@@ -11,6 +11,7 @@
     {% for pp in panel_proposals %}
             <li><b>{{pp}}</b>:
             <p><b>Panelists: </b>{{ pp.panelists.all|join:", " }}</p>
+            <blockquote>{{pp.blurb}}</blockquote>
             {% if not pp.needs_panelists %}
             <p>Times available:</p>
             <ul>

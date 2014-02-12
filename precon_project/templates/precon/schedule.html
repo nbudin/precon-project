@@ -10,6 +10,9 @@
     .table thead th.room {
         text-align: center;
     }
+    a.edit-link {
+        font-size: 75%;
+    }
 </style>
 {% endblock %}
 
@@ -32,7 +35,10 @@
         <tr>
         <th>{{slot}}</th>
         {% for room, panel in rooms_panels %}
-            <td><a href="{% url 'panel_list' %}#{{panel.anchor}}">{{panel.name}}</a></td>
+            <td>
+                <p><a href="{% url 'panel_list' %}#{{panel.anchor}}">{{panel.name}}</a> {% if request.user.is_staff %}<a class="edit-link" href="{{ panel.get_admin_url }}">[Edit]</a>{% endif %}</p>
+                <p>{{panel.panelists_nbsp|join:", "}}</p>
+            </td>
         {% endfor %}
         </tr>
     {% endfor %}
