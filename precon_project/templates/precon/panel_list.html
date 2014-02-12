@@ -16,6 +16,9 @@
        blockquote {
         border-left: 5px solid #ccc;
        }
+       a.back {
+        font-size: 85%;
+       }
     </style>
 {% endblock %}
 
@@ -26,10 +29,11 @@
 {% for panel in panels %}
 
     <div class="section" id="{{panel.anchor}}">
-        <h3>{{panel.name}}</h3>
+        <h3>{{panel.type}}: {{panel.name}}</h3>
         <p>{{panel.room}} - {{panel.slot}}</p>
-        <p>Presenters: {{ panel.panelists.all | join:",  "}}</p>
+        <p>{{panel.presenter_type}}{{panel.panelists.all|pluralize}}: {{ panel.panelists.all | join:",  "}}</p>
         <blockquote>{{panel.blurb}}</blockquote>
+        <a class="back" href="{% url 'schedule' %}">← back to schedule grid</a>
     </div>
 
 {% endfor %}
