@@ -11,12 +11,19 @@ class Command(BaseCommand):
         f = open(args[0], 'rb')
         csvfile = csv.reader(f)
 
-        header = csvfile.readrow()
+        header = csvfile.next()
         rooms = [Room.objects.get(name=r) for r in header[1:]]
 
         for row in csvfile:
-            slot = Slot.objects.get(row[0])
+            print row
+            slot = Slot.objects.get(name=row[0])
 
             for pp_name, room in zip(row[1:], rooms):
-                pp = PanelProposal.objects.get(name=pp_name)
-                panel = Panel(name=pp.name, blurb=pp.blurb, type=pp.type, room=room, slot=slot)
+                if pp_name:
+                    print pp_name
+                    pp = PanelProposal.objects.get(name=pp_name)
+                    try:
+                        Panel.objects.get(name=pp.name)
+                    except Panel.DoesNotExist:
+                        panel = Panel(name=pp.name, blurb=pp.blurb, type=pp.type, room=room, slot=slot)
+                        panel.save()
