@@ -27,5 +27,6 @@ urlpatterns = patterns('',
     url(r'^survey/(?P<nonce>[\da-z]+)/done/$', 'precon.views.survey_done', name='survey_done'),
 
     url(r'^schedule/$', 'precon.views.schedule', name='schedule'),
+    url(r'^schedule/panels/(?P<nonce>[\da-z]+)/$', 'precon.views.panel_list', name='panel_list'),
     url(r'^schedule/panels/$', 'precon.views.panel_list', name='panel_list'),
 )

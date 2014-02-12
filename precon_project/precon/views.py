@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.forms import ModelForm, CheckboxSelectMultiple
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
@@ -206,10 +206,19 @@ def schedule(request):
 
     return render(request, 'precon/schedule.html', context)
 
-def panel_list(request):
-    panels = Panel.objects.all()
+def panel_list(request, nonce=None):
+    if nonce:
+        participant = get_object_or_404(Participant, nonce=nonce)
+        panelist = get_object_or_404(Panelist, participant=participant)
+        panels = Panel.objects.filter(panelists__in=[panelist])
+        if not panels:
+            return HttpResponseNotFound()
+    else:
+        panelist = None
+        panels = Panel.objects.all()
 
     context = {
+        'panelist': panelist,
         'panels': panels,
     }
 

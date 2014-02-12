@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Precon Panels{% endblock %}
+{% block title %}Precon Panels{% if panelist %}: {{panelist}}{% endif %}{% endblock %}
 
 {% block extra_css %}
     <style>
@@ -22,7 +22,7 @@
     </style>
 {% endblock %}
 
-{% block page_title %}Precon Panels{% endblock %}
+{% block page_title %}Precon Panels{% if panelist %}: {{panelist}}{% endif %}{% endblock %}
 
 {% block content %}
 
