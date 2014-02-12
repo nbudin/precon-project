@@ -2,6 +2,7 @@ import string, random
 
 from django.db import models
 from django.db.models.query import QuerySet
+from django.utils.safestring import mark_safe
  
 def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
@@ -50,6 +51,9 @@ class Panelist(models.Model):
 
     def __unicode__(self):
         return self.participant and self.participant.name or self.name
+
+    def name_nbsp(self):
+        return mark_safe('&nbsp;'.join(unicode(self).split(' ')))
 
     class Meta:
         ordering = ['name']
@@ -184,6 +188,12 @@ class Panel(models.Model):
 
     def anchor(self):
         return "%d" % (self.id,)
+
+    def panelists_nbsp(self):
+        return [panelist.name_nbsp() for panelist in self.panelists.all()]
+
+    class Meta:
+        ordering = ['name']
 
 class Schedule(models.Model):
     name = models.CharField(max_length=20, unique=True)
