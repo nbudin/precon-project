@@ -159,6 +159,20 @@ class PanelProposalResponse(models.Model):
 
 
 class Panel(models.Model):
+    PANEL = 'Panel'
+    TALK = 'Talk'
+    WORKSHOP = 'Workshop'
+    DISCUSSION = 'Discussion'
+    TABLETOP = 'Tabletop Game'
+    TYPE_CHOICES = (
+        (PANEL, PANEL),
+        (TALK, TALK),
+        (WORKSHOP, WORKSHOP),
+        (DISCUSSION, DISCUSSION),
+        (TABLETOP, TABLETOP),
+    )
+
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES, default=PANEL)
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
     panelists = models.ManyToManyField(Panelist, null=True, blank=True)
