@@ -6,11 +6,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
 
-<<<<<<< HEAD
-from models import Panelist, Participant, PanelProposal, PanelProposalResponse, Slot
-=======
 from models import Panelist, Participant, PanelProposal, PanelProposalResponse, Slot, Room, Panel
->>>>>>> 720174fcb66fae77f746812ad1618558b0ad8477
 
 
 class ParticipantForm(ModelForm):
@@ -146,7 +142,6 @@ def results_dashboard(request):
 
     return render(request, 'precon/results_dashboard.html', context)
 
-<<<<<<< HEAD
 @login_required
 def attending_dashboard(request):
     ps = Participant.objects.all()
