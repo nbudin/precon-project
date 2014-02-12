@@ -166,6 +166,7 @@ def attending_dashboard(request):
 
     return render(request, 'precon/attending_dashboard.html', context)
 
+@login_required
 def scheduling(request):
     slots = Slot.objects.all()
     participants = Participant.objects.all()
