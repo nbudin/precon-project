@@ -176,9 +176,14 @@ class Panel(models.Model):
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
     panelists = models.ManyToManyField(Panelist, null=True, blank=True)
+    slot = models.ForeignKey('Slot', related_name='panels', null=True, blank=True)
+    room = models.ForeignKey('Room', related_name='panels', null=True, blank=True)
 
     def __unicode__(self):
         return "\"%s\"" % (self.name,)
+
+    def anchor(self):
+        return "%d" % (self.id,)
 
 class Schedule(models.Model):
     name = models.CharField(max_length=20, unique=True)
@@ -188,6 +193,20 @@ class Schedule(models.Model):
 
 class Slot(models.Model):
     schedule = models.ForeignKey(Schedule, related_name='slots')
+    name = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.name
+
+    def get_panel_for_room(self, room):
+        for panel in self.panels.all():
+            if panel.room == room:
+                return panel
+
+        return None
+
+class Room(models.Model):
+    schedule = models.ForeignKey(Schedule, related_name='rooms')
     name = models.CharField(max_length=20)
 
     def __unicode__(self):
