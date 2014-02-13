@@ -193,27 +193,13 @@ class Panel(models.Model):
         TABLETOP: TABLETOP_PRESENTER,
     }
 
-    LENGTH_CHOICES = (
-        ('1', '1'),
-        ('2', '2'),
-        ('3', '3'),
-        ('4', '4'),
-        ('5', '5'),
-        ('6', '6'),
-        ('7', '7'),
-        ('8', '8'),
-        ('9', '9'),
-        ('10', '10'),
-    )
-
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default=PANEL)
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
     panelists = models.ManyToManyField(Panelist, related_name='panels', null=True, blank=True)
-    slot = models.ForeignKey('Slot', related_name='panels', null=True, blank=True)
+    slot = models.ManyToManyField('Slot', related_name='panels', null=True, blank=True)
     room = models.ForeignKey('Room', related_name='panels', null=True, blank=True)
     panel_proposal = models.ForeignKey('PanelProposal', related_name='panels_accepted', null=True, blank=True)
-    length = models.CharField("Length (hours)", max_length=10, choices=LENGTH_CHOICES, default='1')
 
     def __unicode__(self):
         return "\"%s\"" % (self.name,)
@@ -226,6 +212,9 @@ class Panel(models.Model):
 
     def presenter_type(self):
         return self.PRESENTER_TYPES[self.type]
+
+    def length(self):
+        return self.slot.count()
 
     class Meta:
         ordering = ['name']

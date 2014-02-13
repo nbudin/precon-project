@@ -9,10 +9,6 @@
     }
     .table thead th.room {
         text-align: center;
-        border: 1px solid #ddd;
-    }
-    .table tbody td {
-        border: 1px solid #ddd;
     }
     a.edit-link {
         font-size: 75%;
@@ -43,10 +39,14 @@
             <th>{{slot}}</th>
             {% for room, panel in rooms_panels %}
                 {% if panel %}
-                    <td rowspan="{{panel.length}}">
-                        <p><a href="{% url 'panel_list' %}#{{panel.anchor}}">{{panel.name}}</a> {% if request.user.is_staff %}<a class="edit-link" href="{{ panel.get_admin_url }}">[Edit]</a>{% endif %}</p>
-                        <p>{{panel.panelists_nbsp|join:", "}}</p>
-                    </td>
+                    {% if slot == panel.slot.all.0 %}
+                        <td rowspan="{{panel.length}}">
+                            <p><a href="{% url 'panel_list' %}#{{panel.anchor}}">{{panel.name}}</a> {% if request.user.is_staff %}<a class="edit-link" href="{{ panel.get_admin_url }}">[Edit]</a>{% endif %}</p>
+                            <p>{{panel.panelists_nbsp|join:", "}}</p>
+                        </td>
+                    {% endif %}
+                {% else %}
+                    <td>&nbsp;</td>
                 {% endif %}
             {% endfor %}
             </tr>
