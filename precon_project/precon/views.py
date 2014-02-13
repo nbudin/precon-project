@@ -223,3 +223,15 @@ def panel_list(request, nonce=None):
     }
 
     return render(request, 'precon/panel_list.html', context)
+
+@login_required
+def panelist_list(request):
+    panelists = Panelist.objects.all()
+    slots = Slot.objects.all()
+
+    context = {
+        'panelists': panelists,
+        'slots': slots,
+    }
+
+    return render(request, 'precon/panelist_list.html', context)

@@ -55,6 +55,9 @@ class Panelist(models.Model):
     def name_nbsp(self):
         return mark_safe('&nbsp;'.join(unicode(self).split(' ')))
 
+    def panels_by_slot(self):
+        return [ (slot, self.panels.filter(slot=slot)) for slot in Slot.objects.all() ]
+
     class Meta:
         ordering = ['name']
 
@@ -193,7 +196,7 @@ class Panel(models.Model):
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default=PANEL)
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
-    panelists = models.ManyToManyField(Panelist, null=True, blank=True)
+    panelists = models.ManyToManyField(Panelist, related_name='panels', null=True, blank=True)
     slot = models.ForeignKey('Slot', related_name='panels', null=True, blank=True)
     room = models.ForeignKey('Room', related_name='panels', null=True, blank=True)
     panel_proposal = models.ForeignKey('PanelProposal', related_name='panels_accepted', null=True, blank=True)
