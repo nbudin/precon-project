@@ -4,8 +4,11 @@
 
 {% block extra_css %}
 <style>
+    li.overmax {
+        background-color: #faa;
+    }
     li.overlap {
-        background-color: #fcc;
+        color: #f33;
     }
     li.not-available {
         background-color: #000;
@@ -16,10 +19,6 @@
     }
     li.not-available.overlap {
         background-color: #000;
-        color: #f33;
-    }
-    li.maybe-available.overlap {
-        background-color: #ccc;
         color: #f33;
     }
 </style>
@@ -38,6 +37,7 @@
 <li class="overlap">Overlap</li>
 <li class="overlap not-available">Overlap &amp; Not Available</li>
 <li class="overlap maybe-available">Overlap &amp; Maybe Available</li>
+<li class="overmax">Over Max Panels</li>
 </ul>
 </li>
 </ul>
@@ -46,7 +46,8 @@
 
 <ul>
 {% for panelist in panelists %}
-    <li>{{panelist}}:
+    {% with count_panels=panelist.panels.count max_panels=panelist.participant.max_panels_as_int %}
+    <li class="{% if count_panels > max_panels %}overmax{% endif %}">{{panelist}} ({{count_panels}}/{{max_panels}}):
         <ul>
             {% for slot, panels in panelist.panels_by_slot %}
                 {% for panel in panels %}
@@ -66,6 +67,7 @@
             {% endfor %}
         </ul>
     </li>
+    {% endwith %}
 {% endfor %}
 </ul>
 

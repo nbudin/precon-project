@@ -39,6 +39,11 @@ class Participant(models.Model):
     def responses(self):
         return PanelProposalResponse.objects.filter(participant=self)
 
+    # XXX TODO FIXME
+    def max_panels_as_int(self):
+        "Yes this is a hack."
+        return int(self.max_panels)
+
     def __unicode__(self):
         return self.name
 
