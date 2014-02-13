@@ -51,7 +51,7 @@ def panelproposalresponseform_factory(pp, **kwargs):
     else:
         return PanelProposalResponseNoPresentingForm(**kwargs)
 
-
+@login_required
 def create_participant(request):
     if request.method == 'POST':
         form = ParticipantForm(request.POST)
@@ -81,6 +81,7 @@ def build_forms(participant, post_data=None):
 
     return panel_proposal_response_forms
 
+@login_required
 def record_responses(request, nonce):
     participant = get_object_or_404(Participant, nonce=nonce)
 
@@ -112,6 +113,7 @@ def record_responses(request, nonce):
     return render(request, 'precon/survey.html', context)
 
 
+@login_required
 def survey_done(request, nonce):
     participant = get_object_or_404(Participant, nonce=nonce)
 
