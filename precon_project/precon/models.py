@@ -193,6 +193,19 @@ class Panel(models.Model):
         TABLETOP: TABLETOP_PRESENTER,
     }
 
+    LENGTH_CHOICES = (
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('6', '6'),
+        ('7', '7'),
+        ('8', '8'),
+        ('9', '9'),
+        ('10', '10'),
+    )
+
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default=PANEL)
     name = models.CharField(max_length=100, unique=True)
     blurb = models.TextField(max_length=4000)
@@ -200,6 +213,7 @@ class Panel(models.Model):
     slot = models.ForeignKey('Slot', related_name='panels', null=True, blank=True)
     room = models.ForeignKey('Room', related_name='panels', null=True, blank=True)
     panel_proposal = models.ForeignKey('PanelProposal', related_name='panels_accepted', null=True, blank=True)
+    length = models.CharField("Length (hours)", max_length=10, choices=LENGTH_CHOICES, default='1')
 
     def __unicode__(self):
         return "\"%s\"" % (self.name,)
@@ -222,9 +236,16 @@ class Schedule(models.Model):
     def __unicode__(self):
         return self.name
 
+class Day(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.name
+
 class Slot(models.Model):
     schedule = models.ForeignKey(Schedule, related_name='slots')
     name = models.CharField(max_length=20)
+    day = models.ForeignKey('Day', related_name='slots', null=True, blank=True)
 
     def __unicode__(self):
         return self.name

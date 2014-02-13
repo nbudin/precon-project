@@ -9,6 +9,10 @@
     }
     .table thead th.room {
         text-align: center;
+        border: 1px solid #ddd;
+    }
+    .table tbody td {
+        border: 1px solid #ddd;
     }
     a.edit-link {
         font-size: 75%;
@@ -20,8 +24,10 @@
 
 {% block content %}
 
+{% for day, table_contents in table %}
 <table class="table table-striped table-bordered table-responsive table-compact">
     <thead>
+    <tr><th class="day" span="{{days.count}} + 1">{{day}}</th></tr>
     <tr>
     <th></th>
     {% for room in rooms %}
@@ -32,18 +38,23 @@
 
     <tbody>
     {% for slot, rooms_panels in table_contents %}
-        <tr>
-        <th>{{slot}}</th>
-        {% for room, panel in rooms_panels %}
-            <td>
-                <p><a href="{% url 'panel_list' %}#{{panel.anchor}}">{{panel.name}}</a> {% if request.user.is_staff %}<a class="edit-link" href="{{ panel.get_admin_url }}">[Edit]</a>{% endif %}</p>
-                <p>{{panel.panelists_nbsp|join:", "}}</p>
-            </td>
-        {% endfor %}
-        </tr>
+        {% if slot.panels.count > 0 %}
+            <tr>
+            <th>{{slot}}</th>
+            {% for room, panel in rooms_panels %}
+                {% if panel %}
+                    <td rowspan="{{panel.length}}">
+                        <p><a href="{% url 'panel_list' %}#{{panel.anchor}}">{{panel.name}}</a> {% if request.user.is_staff %}<a class="edit-link" href="{{ panel.get_admin_url }}">[Edit]</a>{% endif %}</p>
+                        <p>{{panel.panelists_nbsp|join:", "}}</p>
+                    </td>
+                {% endif %}
+            {% endfor %}
+            </tr>
+        {% endif %}
     {% endfor %}
     </tbody>
 </table>
+{% endfor %}
         
 
 {% endblock %}
