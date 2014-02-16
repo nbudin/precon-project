@@ -71,4 +71,11 @@
 {% endfor %}
 </ul>
 
+<br />
+<br />
+Panelist,Email,Nonce<br />
+{% for panelist in panelists %}
+{{panelist.name}},{{panelist.participant.email}},{{panelist.participant.nonce}}<br />
+{% endfor %}
+
 {% endblock %}
