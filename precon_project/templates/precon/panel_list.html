@@ -26,6 +26,8 @@
 
 {% block content %}
 
+<p><a href="{% url 'schedule' %}">Back to the schedule grid</a></p>
+
 {% for panel in panels %}
 
     <div class="section" id="{{panel.anchor}}">
@@ -37,5 +39,7 @@
     </div>
 
 {% endfor %}
+
+<p><a href="{% url 'schedule' %}">Back to the schedule grid</a></p>
 
 {% endblock %}
