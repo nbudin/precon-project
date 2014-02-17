@@ -8,6 +8,13 @@
 
 {% block content %}
 
+    <h2>Availability</h2>
+    <ul>
+    {% for slot in slots %}
+        <li>{{slot}}: {{slot.participants_attending.count}}</li>
+    {% endfor %}
+    </ul>
+
     <h2>Attending</h2>
     <ul>
     {% for pp in panel_proposals %}

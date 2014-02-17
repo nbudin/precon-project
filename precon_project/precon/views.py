@@ -146,6 +146,8 @@ def results_dashboard(request):
 
 @login_required
 def attending_dashboard(request):
+    slots = Slot.objects.all()
+
     ps = Participant.objects.all()
 
     panelists = Panelist.objects.all()
@@ -159,6 +161,7 @@ def attending_dashboard(request):
     pprs = PanelProposalResponse.objects.all()
 
     context = { 
+        'slots': slots,
         'participants': ps,
         'panel_proposals': pps,
         'panel_proposal_responses': pprs,
