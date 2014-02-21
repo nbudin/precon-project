@@ -13,6 +13,18 @@
     a.edit-link {
         font-size: 75%;
     }
+    .bg-info {
+        background-color: #d9edf7;
+        padding: 15px;
+    }
+    .bg-primary {
+        background-color: #428bca;
+        color: #fff;
+        padding: 15px;
+    }
+    .bg-primary a {
+        color: #fff;
+    }
 </style>
 {% endblock %}
 
@@ -22,7 +34,9 @@
 
 <p><a href="http://interactiveliterature.org/N/">Back to the Intercon N site</a></p>
 
-<a href="#changes">Changes since the schedule was posted</a>
+<p class="bg-info"><b>Boardroom:</b> Throughout Precon, the Boardroom will be open as a de-facto con suite for you to hang out, continue discussions after panels are ended, read character sheets, do any last-minute costuming prep, etc.  Food is allowed in the room, although there won't be official Intercon con suite food there.</p>
+
+<p class="bg-primary"><a href="#changes">Changes since the schedule was posted</a></p>
 
 {% for day, table_contents in table %}
 <table class="table table-striped table-bordered table-responsive table-compact">
@@ -62,9 +76,10 @@
         
 <p><a href="http://interactiveliterature.org/N/">Back to the Intercon N site</a></p>
 
-<h3 id="changes">Changes</h3>
-<ul>
-<li>Feb 16, 9p: Updated Improv Games blurb and Acting Techniques for LARPers blurb.</li>
-</ul>
-
+<div class="bg-info" style="margin: 0 0 5em 0">
+    <h3 id="changes">Changes</h3>
+    <ul>
+    <li>Feb 16, 9p: Updated Improv Games blurb and Acting Techniques for LARPers blurb.</li>
+    </ul>
+</div>
 {% endblock %}
