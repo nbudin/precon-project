@@ -83,7 +83,7 @@
 Moderator,Email,PanelName,Panelists<br />
 {% for panel in panels %}
 {% if panel.moderator %}
-{{panel.moderator.name}},{{panel.moderator.participant.email}},{{panel.name}},&quot;{{panel.panelists_as_email_html|join:', '}}&quot;<br />
+{{panel.moderator.name}},{{panel.moderator.participant.email}},&quot;{{panel.name}}&quot;,&quot;{{panel.panelists_as_email_html|join:', '}}&quot;<br />
 {% endif %}
 {% endfor %}
 

@@ -213,6 +213,7 @@ class Panel(models.Model):
     room = models.ForeignKey('Room', related_name='panels', null=True, blank=True)
     panel_proposal = models.ForeignKey('PanelProposal', related_name='panels_accepted', null=True, blank=True)
     moderator = models.ForeignKey(Panelist, related_name='panels_moderating', null=True, blank=True)
+    needs_projector = models.BooleanField('Needs a projector?')
 
     def __unicode__(self):
         return "\"%s\"" % (self.name,)
