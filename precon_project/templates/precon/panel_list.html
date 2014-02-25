@@ -33,7 +33,7 @@
     <div class="section" id="{{panel.anchor}}">
         <h3>{{panel.type}}: {{panel.name}}</h3>
         <p>{{panel.room}} - {{panel.slot.all.0}}</p>
-        <p>{{panel.presenter_type}}{{panel.panelists.all|pluralize}}: {{ panel.panelists.all | join:",  "}}</p>
+        <p>{{panel.presenter_type}}{{panel.panelists.all|pluralize}}: {{ panel.panelists_nbsp | join:",  "}}</p>
         <blockquote>{{panel.blurb}}</blockquote>
         <a class="back" href="{% url 'schedule' %}">← back to schedule grid</a>
     </div>

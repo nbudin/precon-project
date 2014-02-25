@@ -205,6 +205,7 @@ class Panel(models.Model):
     slot = models.ManyToManyField('Slot', related_name='panels', null=True, blank=True)
     room = models.ForeignKey('Room', related_name='panels', null=True, blank=True)
     panel_proposal = models.ForeignKey('PanelProposal', related_name='panels_accepted', null=True, blank=True)
+    moderator = models.ForeignKey(Panelist, related_name='panels_moderating', null=True, blank=True)
 
     def __unicode__(self):
         return "\"%s\"" % (self.name,)
@@ -213,7 +214,16 @@ class Panel(models.Model):
         return "%d" % (self.id,)
 
     def panelists_nbsp(self):
-        return [panelist.name_nbsp() for panelist in self.panelists.all()]
+        panelists = [panelist for panelist in self.panelists.all()]
+
+        panelist_names = []
+        if self.moderator and self.moderator in panelists:
+            panelists.remove(self.moderator)
+            panelist_names.append(mark_safe("%s&nbsp;(m)" % (self.moderator.name_nbsp(),)))
+
+        panelist_names.extend([panelist.name_nbsp() for panelist in panelists])
+
+        return panelist_names
 
     def presenter_type(self):
         return self.PRESENTER_TYPES[self.type]
