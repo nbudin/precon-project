@@ -244,3 +244,9 @@ def panelist_list(request):
     }
 
     return render(request, 'precon/panelist_list.html', context)
+
+
+@login_required
+def staff_dashboard(request):
+    context = {},
+    return render(request, 'precon/staff_dashboard.html', context)

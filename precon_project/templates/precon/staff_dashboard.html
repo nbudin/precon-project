@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Precon Staff{% endblock %}
+
+{% block page_title %}Precon Staff{% endblock %}
+
+{% block content %}
+
+    <h3>Staff Resources</h3>
+
+    <p><a href="{% url 'home' %}">Home</a></p>
+
+    <p><a href="/admin/">Django Admin</a></p>
+
+    <ul>
+    <li><b>Survey</b>
+        <ul>
+        <li><a href="{% url 'results_dashboard' %}">Results</a></li>
+        <li><a href="{% url 'attending_dashboard' %}">Attending</a></li>
+        <li><a href="{% url 'presenting_dashboard' %}">Presenting</a></li>
+        <li><a href="{% url 'scheduling' %}">Scheduling availability</a></li>
+        </ul>
+    </li>
+    <li><b><a href="{% url 'schedule' %}">Schedule</a></b>
+        <ul>
+        <li><a href="{% url 'panel_list' %}">Panels</a></li>
+        <li><a href="{% url 'panelist_list' %}">Panelists</a></li>
+        </ul>
+    </ul>
+
+
+{% endblock %}

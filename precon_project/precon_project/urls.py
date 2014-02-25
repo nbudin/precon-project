@@ -15,19 +15,26 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^scheduling/$', 'precon.views.scheduling', name='scheduling'),
+    url(r'^staff/$', 'precon.views.staff_dashboard', name='staff_dashboard'),
 
+    ### survey
     url(r'^survey/$', 'precon.views.create_participant', name='create_participant'),
+
+    # staff survey dashboards
     url(r'^survey/results_dashboard/$', 'precon.views.results_dashboard', name='results_dashboard'),
     url(r'^survey/attending_dashboard/$', 'precon.views.attending_dashboard', name='attending_dashboard'),
     url(r'^survey/presenting_dashboard/$', 'precon.views.presenting_dashboard', name='presenting_dashboard'),
+    url(r'^survey/scheduling/$', 'precon.views.scheduling', name='scheduling'),
+
+    # survey itself
     url(r'^survey/(?P<nonce>[\da-z]+)/$', 'precon.views.record_responses', name='record_responses'),
     url(r'^survey/(?P<nonce>[\da-z]+)/done/$', 'precon.views.survey_done', name='survey_done'),
 
+    ### schedule
     url(r'^schedule/$', 'precon.views.schedule', name='schedule'),
     url(r'^schedule/panels/(?P<nonce>[\da-z]+)/$', 'precon.views.panel_list', name='panel_list'),
     url(r'^schedule/panels/$', 'precon.views.panel_list', name='panel_list'),
     url(r'^schedule/panelists/$', 'precon.views.panelist_list', name='panelist_list'),
+
 )
