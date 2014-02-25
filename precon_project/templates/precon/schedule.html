@@ -52,7 +52,7 @@
 
     <tbody>
     {% for slot, rooms_panels in table_contents %}
-        {% if slot.panels.count > 0 %}
+        {% if slot.panels.count > 0 or request.user.is_staff %}
             <tr>
             <th>{{slot}}</th>
             {% for room, panel in rooms_panels %}
