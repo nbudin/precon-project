@@ -245,6 +245,20 @@ def panelist_list(request):
 
     return render(request, 'precon/panelist_list.html', context)
 
+@login_required
+def moderator_list(request):
+    panels = Panel.objects.all()
+    panelists = Panelist.objects.all()
+    slots = Slot.objects.all()
+
+    context = {
+        'panels': panels,
+        'panelists': panelists,
+        'slots': slots,
+    }
+
+    return render(request, 'precon/moderator_list.html', context)
+
 
 @login_required
 def staff_dashboard(request):

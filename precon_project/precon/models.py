@@ -61,8 +61,14 @@ class Panelist(models.Model):
     def name_nbsp(self):
         return mark_safe('&nbsp;'.join(unicode(self).split(' ')))
 
+    def as_email_html(self):
+        return mark_safe("%s &lt;%s&gt;" % (self.name, self.participant.email))
+
     def panels_by_slot(self):
         return [ (slot, self.panels.filter(slot=slot)) for slot in Slot.objects.all() ]
+
+    def panels_moderating_by_slot(self):
+        return [ (slot, self.panels_moderating.filter(slot=slot)) for slot in Slot.objects.all() ]
 
     class Meta:
         ordering = ['name']
@@ -225,6 +231,9 @@ class Panel(models.Model):
         panelist_names.extend([panelist.name_nbsp() for panelist in panelists])
 
         return panelist_names
+
+    def panelists_as_email_html(self):
+        return [panelist.as_email_html() for panelist in self.panelists.all()]
 
     def presenter_type(self):
         return self.PRESENTER_TYPES[self.type]

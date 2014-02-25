@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Precon Moderators{% endblock %}
+
+{% block extra_css %}
+<style>
+    li.overmax {
+        background-color: #faa;
+    }
+    li.overlap {
+        color: #f33;
+    }
+    li.not-available {
+        background-color: #000;
+        color: #fff;
+    }
+    li.maybe-available {
+        background-color: #ccc;
+    }
+    li.not-available.overlap {
+        background-color: #000;
+        color: #f33;
+    }
+</style>
+{% endblock %}
+
+{% block page_title %}Precon Moderators{% endblock %}
+
+{% block content %}
+
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
+<ul>
+<li><b>Key:</b>
+<ul>
+<li class="">Available</li>
+<li class="not-available">Not Available</li>
+<li class="maybe-available">Maybe Available</li>
+<li class="overlap">Overlap</li>
+<li class="overlap not-available">Overlap &amp; Not Available</li>
+<li class="overlap maybe-available">Overlap &amp; Maybe Available</li>
+<li class="overmax">Over Max Panels</li>
+</ul>
+</li>
+</ul>
+
+<hr />
+
+<ul>
+{% for panelist in panelists %}
+    {% with count_panels_moderating=panelist.panels_moderating.count %}
+    {% if count_panels_moderating > 0 %}
+    <li>{{panelist}} ({{count_panels_moderating}}):
+        <ul>
+            {% for slot, panels in panelist.panels_moderating_by_slot %}
+                {% for panel in panels %}
+                    <li class="
+                    {% if panels.count > 1 %}
+                        overlap
+                    {% endif %}
+                    {% if slot not in panelist.participant.slots_maybe.all and slot not in panelist.participant.slots_available.all %}
+                        not-available
+                    {% elif slot in panelist.participant.slots_maybe.all and slot not in panelist.participant.slots_available.all %}
+                        maybe-available
+                    {% endif %}
+                    ">
+                    {{slot}} - {{panel.name}}
+                    </li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </li>
+    {% endif %}
+    {% endwith %}
+{% endfor %}
+</ul>
+
+<br />
+<br />
+{# ugly but effective #}
+
+<h3>Panels with moderators CSV</h3>
+Moderator,Email,PanelName,Panelists<br />
+{% for panel in panels %}
+{% if panel.moderator %}
+{{panel.moderator.name}},{{panel.moderator.participant.email}},{{panel.name}},&quot;{{panel.panelists_as_email_html|join:', '}}&quot;<br />
+{% endif %}
+{% endfor %}
+
+<h3>Events without moderators CSV</h3>
+EventName,Participants<br />
+{% for panel in panels %}
+{% if not panel.moderator %}
+{{panel.name}},&quot;{{panel.panelists_as_email_html|join:', '}}&quot;<br />
+{% endif %}
+{% endfor %}
+
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
+{% endblock %}
