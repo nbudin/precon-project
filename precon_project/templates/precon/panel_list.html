@@ -26,6 +26,8 @@
 
 {% block content %}
 
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
 <p><a href="{% url 'schedule' %}">Back to the schedule grid</a></p>
 
 {% for panel in panels %}
@@ -41,5 +43,7 @@
 {% endfor %}
 
 <p><a href="{% url 'schedule' %}">Back to the schedule grid</a></p>
+
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
 
 {% endblock %}

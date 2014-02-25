@@ -28,6 +28,8 @@
 
 {% block content %}
 
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
 <ul>
 <li><b>Key:</b>
 <ul>
@@ -77,5 +79,7 @@ Panelist,Email,Nonce<br />
 {% for panelist in panelists %}
 {{panelist.name}},{{panelist.participant.email}},{{panelist.participant.nonce}}<br />
 {% endfor %}
+
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
 
 {% endblock %}

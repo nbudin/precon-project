@@ -6,6 +6,8 @@
 
 {% block content %}
 
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
 <table class="table table-condensed table-bordered table-striped table-hover">
     <thead><tr>
     <th>Participant</th>
@@ -32,4 +34,7 @@
     {% endfor %}
     </tbody>
 </table>
+
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
 {% endblock %}

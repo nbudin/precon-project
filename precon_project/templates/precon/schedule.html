@@ -32,6 +32,8 @@
 
 {% block content %}
 
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
 <p><a href="http://interactiveliterature.org/N/">Back to the Intercon N site</a></p>
 
 <p class="bg-info"><b>Boardroom:</b> Throughout Precon, the Boardroom will be open as a de-facto con suite for you to hang out, continue discussions after panels are ended, read character sheets, do any last-minute costuming prep, etc.  Food is allowed in the room, although there won't be official Intercon con suite food there.</p>
@@ -86,4 +88,7 @@
     {{changes|unordered_list}}
     </ul>
 </div>
+
+{% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
 {% endblock %}

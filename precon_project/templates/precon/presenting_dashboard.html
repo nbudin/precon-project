@@ -6,6 +6,8 @@
 
 {% block content %}
 
+    {% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
     <h2>Presenting Comments</h2>
     <ul>
     {% for pp in panel_proposals %}
@@ -63,5 +65,7 @@
             </li>
     {% endfor %}
     </ul>
+
+    {% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
 
 {% endblock %}

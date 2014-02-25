@@ -8,6 +8,8 @@
 
 {% block content %}
 
+    {% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
     {% queryexclude participants panel_proposals_responded=None as completed %}
     <h2>Completed the Survey</h2>
     <ul>
@@ -40,4 +42,7 @@
             {{participant}},{{participant.email}},{{participant.nonce}}<br />
         {% endif %}
     {% endfor %}
+
+    {% if request.user.is_staff %}<p><a href="{% url 'staff_dashboard' %}">Back to staff dashboard</a></p>{% endif %}
+
 {% endblock %}
