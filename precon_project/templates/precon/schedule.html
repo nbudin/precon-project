@@ -64,7 +64,10 @@
                         </td>
                     {% endif %}
                 {% else %}
-                    <td>&nbsp;</td>
+                    <td>
+                        &nbsp;
+                        {% if request.user.is_staff %}<a class="edit-link" href="{{ slot.panels.model.get_class_admin_url }}?slot={{slot.id}}&room={{room.id}}">[Add]</a>{% endif %}
+                    </td>
                 {% endif %}
             {% endfor %}
             </tr>
