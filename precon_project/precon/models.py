@@ -1,4 +1,5 @@
 import string, random
+from datetime import datetime
 
 from django.db import models
 from django.db.models.query import QuerySet
@@ -267,6 +268,16 @@ class Room(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Change(models.Model):
+    description = models.TextField(max_length=4000)
+
+    def __unicode__(self):
+        return self.description
+
+    class Meta:
+       ordering = ['-id'] 
+
 
 class SiteConfig(models.Model):
     current_schedule = models.ForeignKey(Schedule, default=None, null=True, blank=True, on_delete=models.SET_NULL)

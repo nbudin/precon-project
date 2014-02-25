@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
 
-from models import Panelist, Participant, PanelProposal, PanelProposalResponse, Slot, Room, Panel, Day
+from models import Panelist, Participant, PanelProposal, PanelProposalResponse, Slot, Room, Panel, Day, Change
 
 
 class ParticipantForm(ModelForm):
@@ -201,6 +201,7 @@ def schedule(request):
     slots = Slot.objects.all()
     rooms = Room.objects.all()
     days = Day.objects.all()
+    changes = Change.objects.all()
 
     table = zip(days, [ zip(day.slots.all(), [ zip(rooms, [ slot.get_panel_for_room(room) for room in rooms ]) for slot in day.slots.all() ]) for day in days ])
 
@@ -209,6 +210,7 @@ def schedule(request):
         'rooms': rooms,
         'days': days,
         'table': table,
+        'changes': changes,
     }
 
     return render(request, 'precon/schedule.html', context)

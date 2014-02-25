@@ -78,9 +78,9 @@
 
 <div class="bg-info" style="margin: 0 0 5em 0">
     <h3 id="changes">Changes</h3>
+    {% if request.user.is_staff %}<a class="edit-link" href="{{ changes.model.get_class_admin_url }}">[Add]</a>{% endif %}
     <ul>
-    <li>Feb 21, 2p: John Lunman has a family emergency and will not be attending Precon or running the Acting Techniques for LARPers workshop, formerly scheduled for 1-3p Friday.</li>
-    <li>Feb 16, 9p: Updated Improv Games blurb and Acting Techniques for LARPers blurb.</li>
+    {{changes|unordered_list}}
     </ul>
 </div>
 {% endblock %}
