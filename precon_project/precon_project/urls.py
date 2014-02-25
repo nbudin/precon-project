@@ -33,6 +33,7 @@ urlpatterns = patterns('',
 
     ### schedule
     url(r'^schedule/$', 'precon.views.schedule', name='schedule'),
+    url(r'^schedule/print/$', 'precon.views.schedule_print', name='schedule_print'),
     url(r'^schedule/panels/(?P<nonce>[\da-z]+)/$', 'precon.views.panel_list', name='panel_list'),
     url(r'^schedule/panels/$', 'precon.views.panel_list', name='panel_list'),
     url(r'^schedule/panelists/$', 'precon.views.panelist_list', name='panelist_list'),

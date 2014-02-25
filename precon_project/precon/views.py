@@ -198,6 +198,13 @@ def presenting_dashboard(request):
     return render(request, 'precon/presenting_dashboard.html', context)
 
 def schedule(request):
+    return _schedule(request)
+
+@login_required
+def schedule_print(request):
+    return _schedule(request, isprint=True)
+
+def _schedule(request, isprint=False):
     slots = Slot.objects.all()
     rooms = Room.objects.all()
     days = Day.objects.all()
@@ -213,7 +220,10 @@ def schedule(request):
         'changes': changes,
     }
 
-    return render(request, 'precon/schedule.html', context)
+    if isprint:
+        return render(request, 'precon/schedule_print.html', context)
+    else:
+        return render(request, 'precon/schedule.html', context)
 
 def panel_list(request, nonce=None):
     if nonce:

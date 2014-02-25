@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Precon Schedule{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        font-size: 9pt;
+        font-family: serif;
+    }
+    @media print {
+        h1, h1 * {
+            display: none !important;
+        }
+        .table th.day, .table th.day * {
+            display: none !important;
+        }
+    }
+    .table, .table th, .table td {
+        border-color: #aaa;
+    }
+    h2 {
+        font-size: 18pt;
+    }
+    .table th, .table td {
+        line-height: 10pt;
+    }
+    .table td {
+        text-align: center;
+    }
+    .table thead th.room {
+        text-align: center;
+    }
+    .logical-page {
+        page-break-after: always;
+    }
+    p.panelists {
+        font-style: italic;
+    }
+    a.edit-link {
+        font-size: 75%;
+    }
+    .bg-info {
+        background-color: #d9edf7;
+        padding: 15px;
+    }
+    .bg-primary {
+        background-color: #428bca;
+        color: #fff;
+        padding: 15px;
+    }
+    .bg-primary a {
+        color: #fff;
+    }
+</style>
+{% endblock %}
+
+{% block page_title %}Precon Schedule for Print{% endblock %}
+
+{% block content %}
+
+{% for day, table_contents in table %}
+<div class="logical-page">
+<h2>Precon Schedule - {{day}}</h2>
+
+<p><b>All events start five minutes after the hour, and end five minutes before the hour.</b></p>
+
+<table class="table table-striped table-bordered table-compact">
+    <thead>
+    <tr><th class="day" span="{{days.count}} + 1">{{day}}</th></tr>
+    <tr>
+    <th></th>
+    {% for room in rooms %}
+        <th class="room">{{room}}</th>
+    {% endfor %}
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for slot, rooms_panels in table_contents %}
+        {% if slot.panels.count > 0 %}
+            <tr>
+            <th>{{slot}}</th>
+            {% for room, panel in rooms_panels %}
+                {% if panel %}
+                    {% if slot == panel.slot.all.0 %}
+                        <td rowspan="{{panel.length}}">
+                            <p>{{panel.name}}</p>
+                            <p class="panelists">{{panel.panelists_nbsp|join:", "}}</p>
+                        </td>
+                    {% endif %}
+                {% else %}
+                    <td>
+                        &nbsp;
+                    </td>
+                {% endif %}
+            {% endfor %}
+            </tr>
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
+
+<p>Current as of {% now 'g A l, F j' %}.  <span style="float: right">See <u>http://precon.free-dissociation.com/schedule/</u> for the latest schedule.</span></p>
+
+</div>
+{% endfor %}
+
+{% endblock %}
