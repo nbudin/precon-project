@@ -90,7 +90,9 @@
     <h3 id="changes">Changes</h3>
     {% if request.user.is_staff %}<a class="edit-link" href="{{ changes.model.get_class_admin_url }}">[Add]</a>{% endif %}
     <ul>
-    {{changes|unordered_list}}
+    {% for change in changes %}
+        <li>{{change}} {% if request.user.is_staff %}<a class="edit-link" href="{{ change.get_admin_url }}">[Edit]</a>{% endif %}</li>
+    {% endfor %}
     </ul>
 </div>
 
