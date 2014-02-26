@@ -14,7 +14,7 @@
     <h2>Completed the Survey</h2>
     <ul>
     {% for p in completed %}
-        <li>{{p}}</li>
+        <li>{{p}} &lt;{{p.email}}&gt;</li>
     {% endfor %}
     </ul>
     <p>Total: {{completed.count}}</p>

@@ -37,6 +37,7 @@
         <p>{{panel.room}} - {{panel.slot.all.0}}</p>
         <p>{{panel.presenter_type}}{{panel.panelists.all|pluralize}}: {{ panel.panelists_nbsp | join:",  "}}</p>
         <blockquote>{{panel.blurb}}</blockquote>
+        {% if request.user.is_staff %}<p>Emails: {{panel.panelists_as_email_html | join:", "}}</p>{% endif %}
         <a class="back" href="{% url 'schedule' %}">← back to schedule grid</a>
     </div>
 
