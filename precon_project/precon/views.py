@@ -225,6 +225,20 @@ def _schedule(request, isprint=False):
     else:
         return render(request, 'precon/schedule.html', context)
 
+@login_required
+def room_schedule_print(request):
+    rooms = Room.objects.all()
+    days = Day.objects.all()
+    
+    rooms_days_slot_panels = zip(rooms, [ zip(days, [ zip( day.slots.all(), [ slot.get_panel_for_room(room) for slot in day.slots.all() ]) for day in days ]) for room in rooms])
+
+    context = {
+        'rooms': rooms,
+        'days': days,
+        'rooms_days_slot_panels': rooms_days_slot_panels,
+    }
+    return render(request, 'precon/room_schedule_print.html', context)
+
 def panel_list(request, nonce=None):
     if nonce:
         participant = get_object_or_404(Participant, nonce=nonce)

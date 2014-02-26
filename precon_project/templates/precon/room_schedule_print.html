@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Precon Schedule{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        h1, h1 * {
+            display: none !important;
+        }
+        .table th.day, .table th.day * {
+            display: none !important;
+        }
+    }
+    .table, .table th, .table td {
+        border-color: #aaa;
+    }
+    .table th, .table td {
+        line-height: 10pt;
+    }
+    .table td {
+        text-align: center;
+    }
+    .table thead th.room {
+        text-align: center;
+    }
+    .logical-page {
+        page-break-after: always;
+    }
+    p.panelists {
+        font-style: italic;
+    }
+    a.edit-link {
+        font-size: 75%;
+    }
+    .bg-info {
+        background-color: #d9edf7;
+        padding: 15px;
+    }
+    .bg-primary {
+        background-color: #428bca;
+        color: #fff;
+        padding: 15px;
+    }
+    .bg-primary a {
+        color: #fff;
+    }
+</style>
+{% endblock %}
+
+{% block page_title %}Precon Room Schedules for Print{% endblock %}
+
+{% block content %}
+
+{% for room, days_slot_panels in rooms_days_slot_panels %}
+<div class="logical-page">
+<h2>Precon Schedule - {{room}}</h2>
+
+<p><b>All events start five minutes after the hour, and end five minutes before the hour.</b></p>
+
+<ul>
+{% for day, slot_panels in days_slot_panels %}
+<li><b>{{day}}</b>
+    <ul>
+    {% for slot, panel in slot_panels %}
+        {% if panel %}
+            <li><b>{{slot}}</b> - {{panel}}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+</li>
+{% endfor %}
+</ul>
+
+<p>Current as of {% now 'g A l, F j' %}.</p>
+
+<p>See <u>http://precon.free-dissociation.com/schedule/</u> for the latest schedule.</p>
+
+</div>
+{% endfor %}
+
+{% endblock %}
