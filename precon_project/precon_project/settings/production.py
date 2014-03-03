@@ -56,7 +56,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'precon',
         'USER': 'precon',
-        'PASSWORD': 'RejNidsej4',
+        'PASSWORD': get_env_setting('DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '',
     }

@@ -37,6 +37,8 @@ class WSGIEnvironment(WSGIHandler):
 
         if 'SECRET_KEY' in environ:
             os.environ['SECRET_KEY'] = environ['SECRET_KEY']
+        if 'DB_PASSWORD' in environ:
+            os.environ['DB_PASSWORD'] = environ['DB_PASSWORD']
         return super(WSGIEnvironment, self).__call__(environ, start_response)
 
 application = WSGIEnvironment()
