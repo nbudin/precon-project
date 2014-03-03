@@ -1,3 +1,7 @@
+The license for the Django project template I used:
+https://github.com/twoscoops/django-twoscoops-project/tree/1.5
+
+
 Copyright (c) 2013 Audrey Roy, Daniel Greenfeld, and contributors.
 
 Permission is hereby granted, free of charge, to any person
