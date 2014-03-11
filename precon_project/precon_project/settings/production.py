@@ -23,7 +23,9 @@ INSTALLED_APPS += ('gunicorn', )
 
 ########## HOST CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
-ALLOWED_HOSTS = ['precon.free-dissociation.com', '198.61.175.240']
+# Allow all host headers
+# XXX TODO this should get changed before we go live with this code again
+ALLOWED_HOSTS = ['*']
 ########## END HOST CONFIGURATION
 
 ########## EMAIL CONFIGURATION
@@ -75,9 +77,6 @@ SECRET_KEY = get_env_setting('SECRET_KEY')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Allow all host headers
-ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
 import os
