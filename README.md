@@ -49,7 +49,7 @@ Some screenshots:
 
 This installs basically like any other Django app, which is to say, the instructions from Daniel Greenfeld and Audrey Roy's excellent [Django starter template README][4] are still mostly correct.
 
-[4]: https://github.com/kevinr/precon-project/blob/master/README.twoscoops-template.rst
+[4]: https://github.com/kevinr/precon-project/blob/master/twoscoops-template/README.twoscoops-template.rst
 
 Good luck.
 
